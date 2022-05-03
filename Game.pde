@@ -1,34 +1,34 @@
-//Patch v1.1:
-//Character Class is implemented
-//movement is implemented for test object myChar
-//fixed red ball not moving
-//please dont delete the comments on grid_game cuz they're notes
-//we can put the cursor into its own class later with mutator methods like the myChar.
-//fixed red dot border
-//added Q as selection button with boolean
+boolean newSelection = false;
+boolean oldSelection = false;
 
-  
-  
+//initializes classes
+Character myChar;
+Enemy enemy1;
 
-  //initializes classes
-  Character myChar;
-  Character currentSelection;
-  Character oldSelection;
-  Character Char2;
-  //Coordinates for CURSOR
-  int border = 3;
-  int xCursorCord = border; 
-  int yCursorCord = border;
-  //Coordinates for Character class object
-  int charX = border;
-  int charY = border;
-  boolean Selection;
+//initializes character array
+CharacterObject[] characterArray;
+int count = 4;
 
-  //Size of the box on the grid
-  int boxScale = 50;
+//Coordinates for CURSOR
+int border = 3;
+int xCursorCord = border;
+int yCursorCord = border;
 
-  //Number of columns and rows
-  int columns, rows;
+//Number of columns and rows
+int columns, rows;
+
+//Size of the box on the grid
+int boxScale = 50;
+
+//Coordinates for Character class object
+int charX = border;
+int charY = border;
+
+int enemyX = (int)(random(border, border + 14));
+int enemyY = (int)(random(border, border + 14));
+
+//size of window
+int windowSize = 500;
 
 void setup() {
   size(1000,1000);
