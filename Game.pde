@@ -25,8 +25,8 @@ int boxScale = 50;
 int charX = border;
 int charY = border;
 
-int enemyX = (int)(random(3, rows));
-int enemyY = (int)(random(3, rows));
+int enemyX = (int)(random(border, border + 14));
+int enemyY = (int)(random(border, border + 14));
 
 //size of window
 int windowSize = 500;
