@@ -71,6 +71,9 @@ void draw() {
   for (int x = 0; x < count; x++) {
     characterArray[x].display();
   }
+  
+  println(enemy1.getHealth());
+  println(myChar.attack(enemy1));
 }
 
 void keyPressed() {
