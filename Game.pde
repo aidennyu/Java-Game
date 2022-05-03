@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 //Patch v1.1:
 //Character Class is implemented
 //movement is implemented for test object myChar
@@ -29,16 +30,67 @@
 
   //Number of columns and rows
   int columns, rows;
+=======
+
+boolean newSelection = false;
+boolean oldSelection = false;
+
+//initializes classes
+Character myChar;
+Enemy enemy1;
+
+//initializes character array
+CharacterObject[] characterArray;
+int count = 4;
+
+//Coordinates for CURSOR
+int border = 3;
+int xCursorCord = border;
+int yCursorCord = border;
+
+//Number of columns and rows
+int columns, rows;
+
+//Size of the box on the grid
+int boxScale = 50;
+
+//Coordinates for Character class object
+int charX = border;
+int charY = border;
+
+int enemyX = (int)(random(border, border + 14));
+int enemyY = (int)(random(border, border + 14));
+
+//size of window
+int windowSize = 500;
+//Thomas vars
+boolean Selection;
+Character currentSelection;
+
+
+
+>>>>>>> Stashed changes
 
 void setup() {
   size(1000,1000);
   columns = width/boxScale;
   rows = height/boxScale;
+<<<<<<< Updated upstream
   myChar = new Character(color(255,0,0), 100, 100, 100, 100, 100, 100, charX, charY);
   Char2 = new Character(color(0,0,255), 100, 100, 100, 100, 100, 100, 5, 5);
   currentSelection = null;
   Selection = false;
   
+=======
+  myChar = new Character(color(255, 0, 0), 100, 100, 100, 100, 100, 100, charX, charY);
+  enemy1 = new Enemy(color(0, 255, 0), 100, 100, 100, enemyX, enemyY);
+  characterArray = new CharacterObject[count];
+  currentSelection = null;
+  Selection = false;
+  for (int x = 0; x < count; x++) {
+    characterArray[x] = new CharacterObject((x + 1), 1, (x + 1));
+  }
+>>>>>>> Stashed changes
 }
 
 void draw() {
@@ -96,9 +148,12 @@ void keyPressed() {
   }
 
   //CHARACTER MOVEMENT HERE:
+<<<<<<< Updated upstream
   
   
   
+=======
+>>>>>>> Stashed changes
   if (Selection == true) {
     if (key == CODED) {
       if (keyCode == UP && (currentSelection.getYPos() > border)) {
@@ -120,9 +175,15 @@ void keyPressed() {
   
   
   
+<<<<<<< Updated upstream
   if ((yCursorCord == Char2.getYPos()) && (xCursorCord == Char2.getXPos()) ){ 
     if (((key == 'Q') || (key == 'q'))) {
         currentSelection = Char2;
+=======
+  if ((yCursorCord == myChar.getYPos()) && (xCursorCord == myChar.getXPos()) ){ 
+    if (((key == 'Q') || (key == 'q'))) {
+        currentSelection = myChar;
+>>>>>>> Stashed changes
         Selection = true; 
         //println(myChar.getXPos() + " " + myChar.getYPos() + " ");
       }
