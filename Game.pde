@@ -37,6 +37,7 @@ void setup() {
   rows = height/boxScale;
   myChar = new Character(color(255, 0, 0), 100, 100, 100, 100, 100, 100, charX, charY);
   enemy1 = new Enemy(color(0, 255, 0), 100, 100, 100, enemyX, enemyY);
+  
   characterArray = new CharacterObject[count];
 
   for (int x = 0; x < count; x++) {

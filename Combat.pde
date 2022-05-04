@@ -1,0 +1,6 @@
+class Combat {
+  
+ int playerHit =  
+  
+  
+}
