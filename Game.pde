@@ -36,7 +36,7 @@ void setup() {
   columns = width/boxScale;
   rows = height/boxScale;
   myChar = new Character(color(255, 0, 0), 100, 100, 100, 100, 100, 100, charX, charY);
-  enemy1 = new Enemy(color(0, 255, 0), 100, 100, 100, enemyX, enemyY);
+  enemy1 = new Enemy(color(0, 255, 0), 100, 10, 10, 100, enemyX, enemyY);
   
   characterArray = new CharacterObject[count];
 
@@ -73,8 +73,7 @@ void draw() {
     characterArray[x].display();
   }
   
-  println(enemy1.getHealth());
-  println(myChar.attack(enemy1));
+  myChar.attack(enemy1);
 }
 
 void keyPressed() {

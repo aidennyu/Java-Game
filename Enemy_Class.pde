@@ -6,10 +6,12 @@ class Enemy {
   int defense;
   int xPos;
   int yPos;
+  int enemyMaxHealth;
 
-  Enemy(color c, int health, int attack, int defense, int xPos, int yPos) {
+  Enemy(color c, int health, int enemyMaxHealth, int attack, int defense, int xPos, int yPos) {
     this.c = c;
     this.health = health;
+    this.enemyMaxHealth = enemyMaxHealth;
     this.attack = attack;
     this.defense = defense;
     this.xPos = xPos;
@@ -25,6 +27,16 @@ class Enemy {
   int getHealth()
   {
     return this.health; 
+  }
+  
+  void setMaxHealth(int maxHP)
+  {
+    this.enemyMaxHealth = maxHP;
+  }
+  
+  int getMaxHealth()
+  {
+    return this.enemyMaxHealth;
   }
   
   void setAttack(int unitAttack)
@@ -66,6 +78,8 @@ class Enemy {
   {
     return this.yPos;
   }
+  
+  
 
   void display()
   {
