@@ -1,25 +1,21 @@
 class Character {
 
   color c;
-  int cost;
   int health;
+  int maxHealth;
   int attack;
   int defense;
-  int fuel;
   int ammo;
   int xPos;
   int yPos;
 
-  //comment
-
-  Character(color unitColor, int unitCost, int unitHealth, int unitDefense, int unitAttack, int unitFuel, int unitAmmo, int unitXPos, int unitYPos)
+  Character(color unitColor, int unitHealth, int unitMaxHealth, int unitDefense, int unitAttack, int unitAmmo, int unitXPos, int unitYPos)
   {
     c = unitColor;
-    cost = unitCost;
     health = unitHealth;
+    maxHealth = unitMaxHealth;
     defense = unitDefense;
     attack = unitAttack;
-    fuel = unitFuel;
     ammo = unitAmmo;
     xPos = unitXPos;
     yPos = unitYPos;
@@ -50,16 +46,6 @@ class Character {
      */
   }
 
-  void setCost(int unitCost)
-  {
-    cost = unitCost;
-  }
-
-  int getCost()
-  {
-    return cost;
-  }
-
   void setHealth(int unitHealth)
   {
     health = unitHealth;
@@ -68,6 +54,16 @@ class Character {
   int getHealth()
   {
     return health;
+  }
+
+  void setMaxHealth(int unitMaxHealth)
+  {
+    maxHealth = unitMaxHealth;
+  }
+
+  int getMaxHealth()
+  {
+    return maxHealth;
   }
 
   void setAttack(int unitAttack)
@@ -88,16 +84,6 @@ class Character {
   int getDefense()
   {
     return defense;
-  }
-
-  void setFuel(int unitFuel)
-  {
-    fuel = unitFuel;
-  }
-
-  int getFuel()
-  {
-    return fuel;
   }
 
   void setAmmo(int unitAmmo)
@@ -149,41 +135,52 @@ class Character {
 
   void attack(Enemy enemy)
   {
-    //luck range (max - min) + 1
-    double maxLuck = 0.09;
-    double minLuck = 0.00;
-    double range = (maxLuck - minLuck) + 1  ;
 
-    //calculating luck
-    int luck = (int)(Math.random() * range);
+    if (enemy.getHealth() > 0) {
 
-    /*calculating attack value
-    DMG% = (((B * Aco)/100)) + L - Lb) * (HPa/10) * ((200-(Dco+Dtr*HPd))/100)
-    Damage % = Actual damage, expressed as a percentage
-    B = Base damage against that unit (see the table below)
-    ACO = Attacking CO attack value (eg: 110 for Hawke)
-    L = Luck damage, defaulting to a random number between 0 and 9
-    LB = Bad luck damage, where applicable
-    HPA = Visual HP of attacker (the displayed number from 1 through 10)
-    DCO = Defending CO defense value (eg: 80 for Grimm)
-    DTR = Defending Terrain Stars (e.g. 1 for Plains, 2 for Woods)
-    HPD = Visual HP of defender (the displayed number from 1 through 10)
-    
-    Two rounding steps then occur at the end of the calculation, before the stated value is applied or shown in the damage tooltip and calculator:
+      //Using basic attack damage formula based on rng roll.
+      //Damage from 1-4
+      //luck range (max - min) + 1
+      double maxLuck = 4.00;
+      double minLuck = 1.00;
+      double range = (maxLuck - minLuck) + 1  ;
 
-    The value is rounded up to the nearest interval of 0.05.
-    The value is rounded down to the nearest integer.
-    
-    READ: https://awbw.fandom.com/wiki/Damage_Formula
-    */
-    
-    int COATK = 100;
-    int CODEF = 100;
+      //calculating luck
+      int luck = (int)(Math.random() * range);
 
-    int attackValue = (COATK/CODEF) + (1 + luck);
+      /*calculating attack value
+       DMG% = (((B * Aco)/100)) + L - Lb) * (HPa/10) * ((200-(Dco+Dtr*HPd))/100)
+       Damage % = Actual damage, expressed as a percentage
+       B = Base damage against that unit (see the table below)
+       ACO = Attacking CO attack value (eg: 110 for Hawke)
+       L = Luck damage, defaulting to a random number between 0 and 9
+       LB = Bad luck damage, where applicable
+       HPA = Visual HP of attacker (the displayed number from 1 through 10)
+       DCO = Defending CO defense value (eg: 80 for Grimm)
+       DTR = Defending Terrain Stars (e.g. 1 for Plains, 2 for Woods)
+       HPD = Visual HP of defender (the displayed number from 1 through 10)
+       
+       Two rounding steps then occur at the end of the calculation, before the stated value is applied or shown in the damage tooltip and calculator:
+       
+       The value is rounded up to the nearest interval of 0.05.
+       The value is rounded down to the nearest integer.
+       
+       READ: https://awbw.fandom.com/wiki/Damage_Formula
+       */
 
+      int COATK = getAttack();
+      int CODEF = enemy.getDefense();
 
-    enemy.setHealth(-attackValue);
-    println("You attacked for " + attackValue + " damage! The enemy has " + enemy.getHealth() + "/" + enemy.getMaxHealth() + " health left");
+      int attackValue = (int)(Math.random() * (COATK/CODEF) + (1 + luck));
+
+      enemy.setHealth(enemy.getHealth() - attackValue);
+      println("You attacked for " + attackValue + " damage! The enemy has " + enemy.getHealth() + "/" + enemy.getMaxHealth() + " health left");
+
+      if (attackValue >= 4) {
+        println("You inflicted a critical hit!");
+      } else if (attackValue <= 1) {
+        println("Your attack missed!");
+      }
+    }
   }
 }

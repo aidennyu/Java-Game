@@ -35,8 +35,10 @@ void setup() {
   size(1000, 1000);
   columns = width/boxScale;
   rows = height/boxScale;
-  myChar = new Character(color(255, 0, 0), 100, 100, 100, 100, 100, 100, charX, charY);
-  enemy1 = new Enemy(color(0, 255, 0), 100, 10, 10, 100, enemyX, enemyY);
+  
+  //color, health, maxhealth, defense, attack, ammo, XPos, YPos
+  myChar = new Character(color(255, 0, 0), 30, 30, 100, 100, 100, charX, charY);
+  enemy1 = new Enemy(color(0, 255, 0), 30, 30, 100, 100, enemyX, enemyY);
   
   characterArray = new CharacterObject[count];
 
