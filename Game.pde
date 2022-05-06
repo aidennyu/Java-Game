@@ -1,152 +1,144 @@
-// Global variables
-Character[] character_array;
-int character_count = 4;
+boolean newSelection = false;
+boolean oldSelection = false;
 
+//initializes classes
+Character myChar;
+Enemy enemy1;
+
+//initializes character array
+CharacterObject[] characterArray;
+int count = 4;
+
+//Coordinates for CURSOR
 int border = 3;
-int cursor_x = border;
-int cursor_y = border;
+int xCursorCord = border;
+int yCursorCord = border;
 
+//Number of columns and rows
 int columns, rows;
 
-int box_size = 50;
+//Size of the box on the grid
+int boxScale = 50;
 
-boolean selection = false;
-Character current_selection;
+//Coordinates for Character class object
+int charX = border;
+int charY = border;
+
+int enemyX = (int)(random(columns*50+25));
+int enemyY = (int)(random(rows*50+25));
 
 
-// Function on start-up
+
 void setup() {
-  size(1000, 1000);
-  columns = width / box_size;
-  rows = height / box_size;
-  character_array = new Character[character_count];
-  current_selection = null;
+  size(1000,1000);
+  columns = width/boxScale;
+  rows = height/boxScale;
+  myChar = new Character(color(255,0,0), 100, 100, 100, 100, 100, 100, charX, charY);
+  Char2 = new Character(color(0,0,255), 100, 100, 100, 100, 100, 100, 5, 5);
+  currentSelection = null;
+  Selection = false;
   
-  for (int i = 0; i < character_count; i++) {
-    character_array[i] = new Character(100, border * (i + 1), border * (i + 1), 100, 100, true);
-  }
 }
 
-
-// Function that refreshes every frame
 void draw() {
   background(255);
-  fill(225);
-  stroke(0);
-  
   for (int i = border; i < columns - border; i++) {
-    for (int j = border; j < rows - border; j++) {
-      rect(i * box_size, j * box_size, box_size, box_size);
+    for (int p = border; p < rows - border; p++) {
+
+      int xCord = i * boxScale;
+      int yCord = p * boxScale;
+
+      //Colours of inside the box and the outline
+      fill(255);
+      stroke(0);
+
+      //generates box (xlocation, ylocation, width, length)
+      rect(xCord, yCord, boxScale, boxScale);
     }
   }
+      //Draws Cursor
+      fill(255,0,0,100);
+      stroke(00);
+      rect(xCursorCord*50, yCursorCord*50, boxScale, boxScale);
   
-  fill(255, 0, 0, 100);  
-  rect(cursor_x * 50, cursor_y * 50, box_size, box_size);
-  
-  for (int k = 0; k < character_count; k++) {
-    character_array[k].display();
-  }
+      //Draws Character object's thing
+      myChar.display();
+      Char2.display();
 }
 
-
-// Function that checks if any two characters overlap
-boolean overlap() {
-  boolean same_space = false;
-  
-  for (int i = 0; i < character_count; i++) {
-    for (int j = 0; j < character_count; j++) {
-      if (i != j && character_array[i].x_position == character_array[j].x_position && character_array[i].y_position == character_array[j].y_position) {
-        same_space = true;
-        break;
-      }
-    }
-    
-    if (same_space) {
-      break; 
-    }
-  }
-  
-  return same_space;
-}
-
-
-// Function that calls when a key is pressed
 void keyPressed() {
-  boolean character_moved = true;
   
-  // Keys to move the character if selected
-  if (selection && key == CODED) {
-    if (keyCode == UP && current_selection.y_position > border) {
-      current_selection.change_y(-1);
-      
-      if (overlap()) {
-        current_selection.change_y(1);
-        character_moved = false;
-      }
-    } else if (keyCode == DOWN && current_selection.y_position < rows - (border + 1)) {
-      current_selection.change_y(1);
-      
-      if (overlap()) {
-        current_selection.change_y(-1);
-        character_moved = false;
-      }
-    } else if (keyCode == RIGHT && current_selection.x_position < columns - (border + 1)) {
-      current_selection.change_x(1);
-      
-      if (overlap()) {
-        current_selection.change_x(-1);
-        character_moved = false;
-      }
-    } else if (keyCode == LEFT && current_selection.x_position > border) {
-      current_selection.change_x(-1);
-      
-      if (overlap()) {
-        current_selection.change_x(1);
-        character_moved = false;
-      }
-    }
-  }
+  /* Uses Arrow Keys:
+  UP = yCursorCord -1
+  LEFT = xCursorCord - 1
+  DOWN = yCursorCord + 1
+  RIGHT = xCursorCord - 1
+
+  Coordinates Start At UPLEFT CORNER
+  Coordinates Start At 0,0 (with border it is +border but the restrictions move with the increase or decrease of the border so its technically still 0,0)
+  */
   
-  // Keys to move the cursor
+  //CURSOR MOVEMENT HERE:
   if (key == CODED) {
-    if (keyCode == UP && cursor_y > border) {
-      cursor_y -= 1;
-      
-      if (!character_moved) {
-        cursor_y += 1; 
-      }
-    } else if (keyCode == DOWN && cursor_y < rows - (border + 1)) {
-      cursor_y += 1;
-      
-      if (!character_moved) {
-        cursor_y -= 1; 
-      }
-    } else if (keyCode == RIGHT && cursor_x < columns - (border + 1)) {
-      cursor_x += 1;
-      
-      if (!character_moved) {
-        cursor_x -= 1; 
-      }
-    } else if (keyCode == LEFT && cursor_x > border) {
-      cursor_x -= 1;
-      
-      if (!character_moved) {
-        cursor_x += 1; 
+    if (keyCode == UP && (yCursorCord > border)) {
+      yCursorCord -= 1;
+
+    } else if (keyCode == DOWN && (yCursorCord < rows - (border+1))) {
+       yCursorCord += 1;
+
+    } else if (keyCode == RIGHT && (xCursorCord < columns - (border+1))) {
+       xCursorCord += 1;
+
+    } else if (keyCode == LEFT && (xCursorCord > border )) {
+       xCursorCord -= 1;
+    }
+  }
+
+  //CHARACTER MOVEMENT HERE:
+  
+  
+  
+  if (Selection == true) {
+    if (key == CODED) {
+      if (keyCode == UP && (currentSelection.getYPos() > border)) {
+       currentSelection.setYPos(-1);
+  
+      } else if (keyCode == DOWN && (currentSelection.getYPos() < rows - (border+1))) {
+         currentSelection.setYPos(1);
+  
+      } else if (keyCode == RIGHT && (currentSelection.getXPos() < columns - (border+1))) {
+         currentSelection.setXPos(1);
+  
+      } else if (keyCode == LEFT && (currentSelection.getXPos() > border )) {
+         currentSelection.setXPos(-1);
       }
     }
   }
   
-  // Keys to select a character
-  for (int i = 0; i < character_count; i++) {
-    if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
-      current_selection = character_array[i];
-      selection = true;
-      break;
-    }
+  
+  
+  
+  
+  if ((yCursorCord == Char2.getYPos()) && (xCursorCord == Char2.getXPos()) ){ 
+    if (((key == 'Q') || (key == 'q'))) {
+        currentSelection = Char2;
+        Selection = true; 
+        //println(myChar.getXPos() + " " + myChar.getYPos() + " ");
+      }
   }
   
-  // Keys to deselect a character
-  if (key == 'R' || key == 'r') {
-    selection = false; 
-  }
+  
+    if ((yCursorCord == myChar.getYPos()) && (xCursorCord == myChar.getXPos()) ){ 
+      if (((key == 'Q') || (key == 'q'))) {
+          currentSelection = myChar;
+          Selection = true; 
+          //println(myChar.getXPos() + " " + myChar.getYPos() + " ");
+        }
+    }
+  
+    if (((key == 'R') || (key == 'r'))) {
+ 
+        Selection = false;
+        //println(myChar.getXPos() + " " + myChar.getYPos() + " ");
+      }
 }
