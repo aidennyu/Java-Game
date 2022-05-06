@@ -13,5 +13,4 @@ It contains all the good stuff:
 - Character and character collision detection
 - Health points and death checking
 
-There will be more to come:
-This is far from done...
+There will be more to come: this is far from done...
