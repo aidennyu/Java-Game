@@ -1,3 +1,7 @@
+# v1.1
+
+Updated further simplified code by using `box_size`.
+
 # v1.0
 
 **This is the first version of Jovian's version of the Processing RPG.**
@@ -14,3 +18,5 @@ It contains all the good stuff:
 - Health points and death checking
 
 There will be more to come: this is far from done...
+
+# Game created...
