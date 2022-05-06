@@ -14,8 +14,9 @@ It contains all the good stuff:
 - Character selection
 	- Drag
 	- Drop
-- Character and border collision detection
-- Character and character collision detection
+- Collision Detection
+	- Character and border
+	- Character and character 
 - Health points and death checking
 
 There will be more to come: this is far from done...
