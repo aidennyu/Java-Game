@@ -1,6 +1,4 @@
-# Versions
-
-## v1.0
+# v1.0
 
 **This is the first version of Jovian's version of the Processing RPG.**
 
