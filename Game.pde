@@ -41,7 +41,7 @@ void draw() {
   }
   
   fill(255, 0, 0, 100);  
-  rect(cursor_x * 50, cursor_y * 50, box_size, box_size);
+  rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
   
   for (int k = 0; k < character_count; k++) {
     character_array[k].display();
