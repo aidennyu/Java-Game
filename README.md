@@ -3,6 +3,8 @@
 - Updated further simplified code by using `box_size`.
 - Changed colour for dead character (from `0, 0, 0` to `100, 100, 100`)
 - Added prototype to character randomization
+- Fixed minor bug
+	- Changed `if (!dead)` into `if (dead)`
 
 # v1.0
 
