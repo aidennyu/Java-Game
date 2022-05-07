@@ -28,7 +28,7 @@ class Character {
       fill(255, 0, 0);
     } else if (!friend && !dead) {
       fill(0, 255, 0); 
-    } else if (!dead) {
+    } else if (dead) {
       fill(0); 
     }
     
