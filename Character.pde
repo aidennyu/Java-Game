@@ -29,7 +29,7 @@ class Character {
     } else if (!friend && !dead) {
       fill(0, 255, 0); 
     } else if (!dead) {
-      fill(100); 
+      fill(0); 
     }
     
     ellipseMode(CENTER);

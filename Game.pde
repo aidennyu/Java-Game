@@ -8,6 +8,8 @@ int cursor_y = border;
 
 int columns, rows;
 
+int character_x, character_y;
+
 int box_size = 50;
 
 boolean selection = false;
@@ -23,7 +25,9 @@ void setup() {
   current_selection = null;
   
   for (int i = 0; i < character_count; i++) {
-    character_array[i] = new Character(100, border * (i + 1), border * (i + 1), 100, 100, true);
+    character_x = int(random(columns - 2 * border));
+    character_y = int(random(columns - 2 * border));
+    character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true);
   }
 }
 
