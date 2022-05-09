@@ -99,8 +99,7 @@ boolean overlap() {
             same_space = true;
             break;
         }
-
-          }
+          
       }
       
       if (same_space) {
