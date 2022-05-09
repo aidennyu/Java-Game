@@ -8,6 +8,7 @@ Enemy enemy1;
 
 //initializes character array
 Character[] characterArray;
+Character[] enemyArray;
 int count = 4;
 
 //Coordinates for CURSOR
@@ -44,10 +45,15 @@ void setup() {
   
   enemy1 = new Enemy(color(0, 255, 0), 100, 100, 100, enemyX, enemyY);
   characterArray = new Character[count];
+  enemyArray = new Character[count];
   currentSelection = null;
   Selection = false;
   for (int x = 0; x < count; x++) {
     characterArray[x] = new Character(color(255, 0, 0), 100, 100, 100, 100, 100, 100, charX * (x + 1), charY * (x + 1));
+    
+  }
+  for (int x = 0; x < count; x++) {
+    enemyArray[x] = new Character(color(157, 0, 255), 100, 100, 100, 100, 100, 100, charX * (x + 1) +1, charY * (x + 1)+1);
     
   }
 }
@@ -79,6 +85,9 @@ void draw() {
   for (int x = 0; x < count; x++) {
     characterArray[x].display();
   }
+  for (int x = 0; x < count; x++) {
+    enemyArray[x].display();
+  }
 }
 
 boolean overlap() {
@@ -86,11 +95,12 @@ boolean overlap() {
   
     for (int x = 0; x < count; x++) {
       for(int y =0; y < count; y++){
-        if(x != y && characterArray[x].getYPos() == characterArray[y].getYPos() && characterArray[x].getXPos() == characterArray[y].getXPos()){
+        if(x != y && characterArray[x].getYPos() == characterArray[y].getYPos() && characterArray[x].getXPos() == characterArray[y].getXPos() ){
             same_space = true;
             break;
         }
-          
+
+          }
       }
       
       if (same_space) {
@@ -190,6 +200,18 @@ void keyPressed() {
   if ((yCursorCord == characterArray[x].getYPos()) && (xCursorCord == characterArray[x].getXPos()) ){ 
     if (((key == 'Q') || (key == 'q'))) {
         currentSelection = characterArray[x];
+        Selection = true; 
+        //println(myChar.getXPos() + " " + myChar.getYPos() + " ");
+        break;
+      }
+  }
+  }
+   for (int x = 0; x < count; x++) {
+    
+  
+  if ((yCursorCord == enemyArray[x].getYPos()) && (xCursorCord == enemyArray[x].getXPos()) ){ 
+    if (((key == 'Q') || (key == 'q'))) {
+        currentSelection = enemyArray[x];
         Selection = true; 
         //println(myChar.getXPos() + " " + myChar.getYPos() + " ");
         break;
