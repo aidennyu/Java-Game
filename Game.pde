@@ -44,7 +44,21 @@ void draw() {
     }
   }
   
-  fill(255, 0, 0, 100);  
+  boolean on_character = false;
+  
+  for (var l = 0; l < character_count; l++) {
+    if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
+      on_character = true;
+      break;
+    } 
+  }
+  
+  if (on_character) {
+    fill(0, 255, 0, 100); 
+  } else {
+    fill(255, 0, 0, 100);
+  }
+  
   rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
   
   for (int k = 0; k < character_count; k++) {

@@ -1,3 +1,7 @@
+# v1.2
+
+- Initialized cursor colouring when on a character
+
 # v1.1
 
 - Updated further simplified code by using `box_size`.
