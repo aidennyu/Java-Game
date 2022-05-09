@@ -41,7 +41,7 @@ void setup() {
   size(1000, 1000);
   columns = width/boxScale;
   rows = height/boxScale;
-  myChar = new Character(color(255, 0, 0), 100, 100, 100, 100, 100, 100, charX, charY);
+  
   enemy1 = new Enemy(color(0, 255, 0), 100, 100, 100, enemyX, enemyY);
   characterArray = new Character[count];
   currentSelection = null;
@@ -73,7 +73,7 @@ void draw() {
   rect(xCursorCord*50, yCursorCord*50, boxScale, boxScale);
 
   //Draws Character object's thing
-  myChar.display();
+
   enemy1.display();
 
   for (int x = 0; x < count; x++) {
