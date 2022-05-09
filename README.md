@@ -4,7 +4,7 @@
 
 # v1.1
 
-- Updated further simplified code by using `box_size`.
+- Updated further simplified code by using `box_size`
 - Changed colour for dead character (from `0, 0, 0` to `100, 100, 100`)
 - Added prototype to character randomization
 - Fixed minor bug
@@ -28,4 +28,4 @@ It contains all the good stuff:
 
 There will be more to come: this is far from done...
 
-# Game created...
+## Game created...
