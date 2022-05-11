@@ -1,4 +1,9 @@
-# v1.3 - Current Version
+# v1.4 - Current Version
+
+- Implemented an automatic turn-based system
+	- After every move, it switches turns
+
+# v1.3
 
 - Initialized enemy characters
 - Created a randomization for both friendly and enemy characters
