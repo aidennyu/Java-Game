@@ -6,6 +6,7 @@
 - Updated cursor behavior
 	- Cursor will not turn green when on enemy characters, but will turn green when on friendly characters
 	- Cursor will not select enemy characters, only friendly characters
+	- Added different colour to cursor when currently moving a friendly character
 - Friendly characters now have collide checking with other characters, including enemy characters
 
 # v1.2
