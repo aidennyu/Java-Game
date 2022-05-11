@@ -2,6 +2,7 @@
 
 - Implemented an automatic turn-based system
 	- After every move, it switches turns
+- Implemented Aiden's attack function to my code
 
 # v1.3
 
