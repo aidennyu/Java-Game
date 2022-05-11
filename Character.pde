@@ -25,10 +25,16 @@ class Character {
     stroke(0);
     
     if (friend && !dead) {
-      fill(255, 0, 0);
+      
+      // Character is a friend, colour blue
+      fill(0, 0, 255);
     } else if (!friend && !dead) {
-      fill(0, 255, 0); 
-    } else if (!dead) {
+      
+      // Character is an enemy, colour red
+      fill(255, 0, 0); 
+    } else if (dead) {
+      
+      // Character is dead, colour black
       fill(0); 
     }
     
