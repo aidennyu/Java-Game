@@ -1,6 +1,10 @@
 // Global variables
 Character[] character_array;
 int character_count = 4;
+int enemy_count = 5;
+
+int[][] initial_positions;
+
 
 int border = 3;
 int cursor_x = border;
@@ -19,15 +23,55 @@ Character current_selection;
 // Function on start-up
 void setup() {
   size(1000, 1000);
+  
   columns = width / box_size;
   rows = height / box_size;
-  character_array = new Character[character_count];
+  
+  character_array = new Character[character_count + enemy_count];
+  initial_positions = new int[character_count + enemy_count][2];
+  
   current_selection = null;
   
-  for (int i = 0; i < character_count; i++) {
+  boolean same_coordinates;
+  
+  // Randomized initialization for team
+  for (int i = 0; i < character_count; i++) { //<>//
+    same_coordinates = false;
+    
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
-    character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true);
+    
+    for (int j = 0; j < initial_positions.length; j++) {
+      if (character_x == initial_positions[j][0] && character_y == initial_positions[j][1]) {
+        same_coordinates = true;
+        i--;
+        break;
+      }
+    }
+    
+    if (!same_coordinates) {
+      character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true); 
+    }
+  }
+  
+  // Randomized initialization for enemy
+  for (int k = character_count; k < enemy_count + character_count; k++) {
+    same_coordinates = false;
+    
+    character_x = int(random(columns - 2 * border));
+    character_y = int(random(columns - 2 * border));
+    
+    for (int l = 0; l < initial_positions.length; l++) {
+      if (character_x == initial_positions[l][0] && character_y == initial_positions[l][1]) {
+        same_coordinates = true;
+        k--;
+        break;
+      }
+    }
+    
+    if (!same_coordinates) {
+      character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false); 
+    }
   }
 }
 
@@ -45,24 +89,47 @@ void draw() {
   }
   
   boolean on_character = false;
+<<<<<<< Updated upstream
   
   for (var l = 0; l < character_count; l++) {
     if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
       on_character = true;
+=======
+  int character_index = 0;
+  
+  for (var l = 0; l < character_array.length; l++) {
+    if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
+      on_character = true;
+      character_index = l;
+>>>>>>> Stashed changes
       break;
     } 
   }
   
   if (on_character) {
+<<<<<<< Updated upstream
     fill(0, 255, 0, 100); 
+=======
+    if (character_array[character_index].friend) {
+      fill(0, 255, 0, 100);
+    } else {
+      fill(255, 0, 0, 100); 
+    }
+>>>>>>> Stashed changes
   } else {
     fill(255, 0, 0, 100);
   }
   
   rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
   
-  for (int k = 0; k < character_count; k++) {
+  for (int k = 0; k < character_array.length; k++) {
     character_array[k].display();
+  }
+  
+  if (selection) {
+    fill(0);
+    textSize(20);
+    text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50); 
   }
 }
 
@@ -71,8 +138,8 @@ void draw() {
 boolean overlap() {
   boolean same_space = false;
   
-  for (int i = 0; i < character_count; i++) {
-    for (int j = 0; j < character_count; j++) {
+  for (int i = 0; i < character_array.length; i++) {
+    for (int j = 0; j < character_array.length; j++) {
       if (i != j && character_array[i].x_position == character_array[j].x_position && character_array[i].y_position == character_array[j].y_position) {
         same_space = true;
         break;
@@ -93,7 +160,7 @@ void keyPressed() {
   boolean character_moved = true;
   
   // Keys to move the character if selected
-  if (selection && key == CODED) {
+  if (selection && key == CODED && current_selection.friend) {
     if (keyCode == UP && current_selection.y_position > border) {
       current_selection.change_y(-1);
       
@@ -155,8 +222,8 @@ void keyPressed() {
   }
   
   // Keys to select a character
-  for (int i = 0; i < character_count; i++) {
-    if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
+  for (int i = 0; i < character_array.length; i++) {
+    if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead && character_array[i].friend) {
       current_selection = character_array[i];
       selection = true;
       break;

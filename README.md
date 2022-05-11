@@ -1,3 +1,13 @@
+# v1.3 - Current Version
+
+- Initialized enemy characters
+- Created a randomization for both friendly and enemy characters
+	- No character will be in the same square
+- Updated cursor behavior
+	- Cursor will not turn green when on enemy characters, but will turn green when on friendly characters
+	- Cursor will not select enemy characters, only friendly characters
+- Friendly characters now have collide checking with other characters, including enemy characters
+
 # v1.2
 
 - Initialized cursor colouring when on a character
