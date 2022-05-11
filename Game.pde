@@ -1,3 +1,12 @@
+<<<<<<< Updated upstream
+=======
+// Global variables
+Character[] character_array;
+
+int character_count = 3;
+int enemy_count = 5;
+int total_count = character_count += enemy_count;
+>>>>>>> Stashed changes
 
 boolean newSelection = false;
 boolean oldSelection = false;
@@ -40,6 +49,7 @@ Character currentSelection;
 
 void setup() {
   size(1000, 1000);
+<<<<<<< Updated upstream
   columns = width/boxScale;
   rows = height/boxScale;
   
@@ -55,6 +65,30 @@ void setup() {
   for (int x = 0; x < count; x++) {
     enemyArray[x] = new Character(color(157, 0, 255), 100, 100, 100, 100, 100, 100, charX * (x + 1) +1, charY * (x + 1)+1);
     
+=======
+  columns = width / box_size;
+  rows = height / box_size;
+  character_array = new Character[total_count];
+  current_selection = null;
+  
+  for (int i = 0; i < total_count; i++) {
+     if (i < enemy_count){
+    character_x = int(random(columns - 2 * border));
+    character_y = int(random(columns - 2 * border));
+    character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, false);
+
+
+
+
+    }else{
+    character_x = int(random(columns - 2 * border));
+    character_y = int(random(columns - 2 * border));
+    character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true);
+    
+
+    
+    }
+>>>>>>> Stashed changes
   }
 }
 void draw() {
