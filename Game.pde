@@ -34,7 +34,7 @@ void setup() {
   boolean same_coordinates;
   
   // Randomized initialization for team
-  for (int i = 0; i < character_count; i++) { //<>//
+  for (int i = 0; i < character_count; i++) {
     same_coordinates = false;
     
     character_x = int(random(columns - 2 * border));
