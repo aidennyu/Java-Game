@@ -34,7 +34,7 @@ void setup() {
   boolean same_coordinates;
   
   // Randomized initialization for team
-  for (int i = 0; i < character_count; i++) {
+  for (int i = 0; i < character_count; i++) { //<>//
     same_coordinates = false;
     
     character_x = int(random(columns - 2 * border));
@@ -104,7 +104,7 @@ void draw() {
     if (character_array[character_index].friend && !selection) {
       fill(0, 255, 0, 100);
     } else if (selection) {
-      fill(0, 255, 255, 100); 
+      fill(0, 0, 0, 100); 
     } else {
       fill(255, 0, 0, 100); 
     }

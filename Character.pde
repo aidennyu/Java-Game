@@ -25,9 +25,9 @@ class Character {
     stroke(0);
     
     if (friend && !dead) {
-      fill(255, 0, 0);
+      fill(0, 0, 255);
     } else if (!friend && !dead) {
-      fill(0, 255, 0); 
+      fill(255, 0, 0); 
     } else if (dead) {
       fill(0); 
     }
