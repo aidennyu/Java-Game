@@ -9,6 +9,9 @@
 
 // Global variables
 
+//gamemenu
+byte gameState = 2;
+
 // Array of characters
 Character[] character_array;
 
@@ -114,6 +117,7 @@ void setup() {
 
 // Function that refreshes every frame
 void draw() {
+  if (gameState == 2) {
   background(255);
   fill(225);
   stroke(0);
@@ -178,6 +182,7 @@ void draw() {
   }
   
   text("Our Turn: " + our_turn, 50, 100);
+  }
 }
 
 
