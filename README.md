@@ -11,6 +11,7 @@
 - Changed colour of characters
 	- Friendly: Red &rarr; Blue
 	- Enemy: Green &rarr; Red
+- Added tons of comments for readability
 
 # v1.2
 
