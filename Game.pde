@@ -5,7 +5,6 @@ int enemy_count = 5;
 
 int[][] initial_positions;
 
-
 int border = 3;
 int cursor_x = border;
 int cursor_y = border;
