@@ -15,7 +15,17 @@ int border = 3;
 int xCursorCord = border;
 int yCursorCord = border;
 
+<<<<<<< Updated upstream
 //Number of columns and rows
+=======
+//change
+
+// Initialize the cursor coordinates to be at the top left corner
+int cursor_x = border;
+int cursor_y = border;
+
+// Initialize the variables that will store how many columns and rows there are
+>>>>>>> Stashed changes
 int columns, rows;
 
 //Size of the box on the grid
