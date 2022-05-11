@@ -34,7 +34,7 @@ void setup() {
   boolean same_coordinates;
   
   // Randomized initialization for team
-  for (int i = 0; i < character_count; i++) { //<>//
+  for (int i = 0; i < character_count; i++) {
     same_coordinates = false;
     
     character_x = int(random(columns - 2 * border));
@@ -88,33 +88,22 @@ void draw() {
   }
   
   boolean on_character = false;
-<<<<<<< Updated upstream
-  
-  for (var l = 0; l < character_count; l++) {
-    if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
-      on_character = true;
-=======
   int character_index = 0;
   
   for (var l = 0; l < character_array.length; l++) {
     if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
       on_character = true;
       character_index = l;
->>>>>>> Stashed changes
       break;
     } 
   }
   
   if (on_character) {
-<<<<<<< Updated upstream
-    fill(0, 255, 0, 100); 
-=======
     if (character_array[character_index].friend) {
       fill(0, 255, 0, 100);
     } else {
       fill(255, 0, 0, 100); 
     }
->>>>>>> Stashed changes
   } else {
     fill(255, 0, 0, 100);
   }
