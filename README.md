@@ -8,6 +8,9 @@
 	- Cursor will not select enemy characters, only friendly characters
 	- Added different colour to cursor when currently moving a friendly character
 - Friendly characters now have collide checking with other characters, including enemy characters
+- Changed colour of characters
+	- Friendly: Red &rarr; Blue
+	- Enemy: Green &rarr; Red
 
 # v1.2
 
