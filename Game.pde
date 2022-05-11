@@ -39,6 +39,9 @@ int box_size = 50;
 boolean selection = false;
 Character current_selection;
 
+// Our turn first!
+boolean our_turn = true;
+
 
 // Function on start-up
 void setup() {
@@ -136,18 +139,22 @@ void draw() {
   }
   
   if (on_character) {
-    if (character_array[character_index].friend && !selection) {
-      
-      // Cursor is on character, but not selected, so colour green
-      fill(0, 255, 0, 100);
-    } else if (selection) {
-      
-      // Cursor is currently selecting a character, so colour black
-      fill(0, 0, 0, 100); 
+    if (!selection) {
+      if (our_turn) {
+        if (character_array[character_index].friend) {
+          fill(0, 255, 0, 100);
+        } else {
+          fill(255, 0, 0, 100);
+        }
+      } else {
+        if (!character_array[character_index].friend) {
+          fill(0, 255, 0, 100);
+        } else {
+          fill(255, 0, 0, 100); 
+        }
+      }
     } else {
-      
-      // Cursor is on a enemy character, so colour red
-      fill(255, 0, 0, 100); 
+      fill(0, 0, 0, 100); 
     }
   } else {
     
@@ -162,12 +169,15 @@ void draw() {
     character_array[k].display();
   }
   
+  fill(0);
+  textSize(20);
+  
   // Drawing other texts
   if (selection) {
-    fill(0);
-    textSize(20);
     text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50); 
   }
+  
+  text("Our Turn: " + our_turn, 50, 100);
 }
 
 
@@ -198,7 +208,7 @@ void keyPressed() {
   boolean character_moved = true;
   
   // Keys to move the character if selected
-  if (selection && key == CODED && current_selection.friend) {
+  if (selection && key == CODED) {
     if (keyCode == UP && current_selection.y_position > border) {
       
       // Move character up
@@ -293,15 +303,31 @@ void keyPressed() {
   
   // Keys to select a character
   for (int i = 0; i < character_array.length; i++) {
-    if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead && character_array[i].friend) {
-      current_selection = character_array[i];
-      selection = true;
-      break;
+    if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
+      if (our_turn) {
+        if (character_array[i].friend) {
+          current_selection = character_array[i];
+          selection = true;
+          break;   
+        }
+      } else {
+        if (!character_array[i].friend) {
+          current_selection = character_array[i];
+          selection = true;
+          break; 
+        }
+      }
     }
   }
   
   // Keys to deselect a character
-  if (key == 'R' || key == 'r') {
+  if ((key == 'R' || key == 'r') && selection) {
     selection = false; 
+    
+    if (our_turn) {
+      our_turn = false; 
+    } else {
+      our_turn = true; 
+    }
   }
 }
