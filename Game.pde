@@ -5,7 +5,6 @@ int enemy_count = 5;
 
 int[][] initial_positions;
 
-
 int border = 3;
 int cursor_x = border;
 int cursor_y = border;
@@ -82,50 +81,45 @@ void draw() {
   fill(225);
   stroke(0);
   
+  // Drawing the board / grid
   for (int i = border; i < columns - border; i++) {
     for (int j = border; j < rows - border; j++) {
       rect(i * box_size, j * box_size, box_size, box_size);
     }
   }
   
+  // Drawing the cursor
   boolean on_character = false;
-<<<<<<< Updated upstream
-  
-  for (var l = 0; l < character_count; l++) {
-    if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
-      on_character = true;
-=======
   int character_index = 0;
   
   for (var l = 0; l < character_array.length; l++) {
     if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
       on_character = true;
       character_index = l;
->>>>>>> Stashed changes
       break;
     } 
   }
   
   if (on_character) {
-<<<<<<< Updated upstream
-    fill(0, 255, 0, 100); 
-=======
-    if (character_array[character_index].friend) {
+    if (character_array[character_index].friend && !selection) {
       fill(0, 255, 0, 100);
+    } else if (selection) {
+      fill(0, 255, 255, 100); 
     } else {
       fill(255, 0, 0, 100); 
     }
->>>>>>> Stashed changes
   } else {
     fill(255, 0, 0, 100);
   }
   
   rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
   
+  // Drawing the characters 
   for (int k = 0; k < character_array.length; k++) {
     character_array[k].display();
   }
   
+  // Drawing other texts
   if (selection) {
     fill(0);
     textSize(20);
