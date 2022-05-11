@@ -4,7 +4,7 @@ class Character {
   // Initialize the variables
   int health_points, current_health_points;
   int x_position, y_position;
-  int attack, damage;
+  int attack, defence;
   boolean dead;
   boolean friend;
   
@@ -15,7 +15,7 @@ class Character {
     x_position = x;
     y_position = y;
     attack = a;
-    damage = d;
+    defence = d;
     friend = f;
     dead = false;
   }
