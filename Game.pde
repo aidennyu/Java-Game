@@ -202,6 +202,20 @@ boolean overlap() {
   return same_space;
 }
 
+// Attack function
+void attack(Character character_1, Character character_2) {
+  if (character_2.health_points > 0) {
+    int range = 4;
+    int luck = int(random(range));
+    
+    int attack = character_1.attack;
+    int defence = character_2.defence;
+    
+    int attack_value = int(random(attack / defence) + (1 + luck));
+    
+    character_2.health_points -= attack_value;
+  }
+}
 
 // Function that calls when a key is pressed
 void keyPressed() {
