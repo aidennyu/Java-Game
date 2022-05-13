@@ -44,7 +44,7 @@ PImage menu;
 PImage level;
 
 byte selectorWixoss = 0;
-
+int xe = 0;
 
 // Function on start-up
 void setup() {
@@ -127,9 +127,9 @@ void draw() {
       fill(0, 255, 0);
       
       //draw the head
-   
-      ellipse(100, 100, 150 , 150);
- 
+      
+      ellipse(100, 100, 150 , 50 + xe);
+      
   
       //white
       fill(255);
@@ -154,7 +154,7 @@ void draw() {
       
       noStroke();
       fill(255, 0, 0, 100);
-      rect(200, 625 + 100 * selectorWixoss, 600, 100);
+      rect(200, 625 + 200 * selectorWixoss, 600, 100);
   }
   
   if (gameState == 1) {
@@ -277,13 +277,18 @@ void keyPressed() {
     
   if (gameState == 0) {
     if (key == CODED) {
-      if (keyCode == UP) {
+      //MENU SLECTOR DRAW RECT HTIGN
+      if (keyCode == DOWN && selectorWixoss != 0) {
          selectorWixoss += 1;
          print(selectorWixoss);
       }
-      if (keyCode == DOWN) {
+      if (keyCode == UP && selectorWixoss != -1) {
          selectorWixoss -= 1;
          print(selectorWixoss);
+      }
+      if (keyCode == LEFT) {
+         xe++;
+         print(xe);
       }
     }
   }
