@@ -1,16 +1,10 @@
-/*
-  Author: Jovian Kuntjoro
-  
-  Description: 
-  This is the main code to a mini RPG game the Gr. 12's and me (cause I'm Gr. 11) are going to make as a "final project"
-  This is my branch of the game and soon, most probably, this code is going to be used in the final code for the finished game.
-*/
+
 
 
 // Global variables
 
 //gamemenu
-byte gameState = 2;
+byte gameState = 0;
 
 // Array of characters
 Character[] character_array;
@@ -45,9 +39,13 @@ Character current_selection;
 // Our turn first!
 boolean our_turn = true;
 
-
+PImage menu;
+PImage level;
 // Function on start-up
 void setup() {
+  //images ini
+  menu = loadImage("AdvancedCars2.jpg");
+  level = loadImage("cars.jpg");
   
   // Initialize the size of the game window
   size(1000, 1000);
@@ -117,71 +115,108 @@ void setup() {
 
 // Function that refreshes every frame
 void draw() {
+  if (gameState == 0) {
+          //green
+      fill(0, 255, 0);
+      
+      //draw the head
+   
+      ellipse(100, 100, 150 , 150);
+ 
+  
+      //white
+      fill(255);
+      
+      //draw the eyes
+      ellipse(75, 85, 30, 20);
+      ellipse(25, 85, 30, 20);
+      
+      //black
+      fill(0);
+      
+      //draw the pupils
+      ellipse(75, 85, 10, 10);
+      ellipse(25, 85, 10, 10);
+      
+      //red
+      fill(255, 0, 0);
+      
+      //draw the mouth
+      arc(100, 125, 80, 50, 0, 3.14);
+      line(60, 125, 140, 125);
+      
+      image(menu, 0, 0, 1000, 1000);
+  }
+  
+  if (gameState == 1) {
+    image(level, 0, 0, 1000, 1000);
+  }
+  
   if (gameState == 2) {
-  background(255);
-  fill(225);
-  stroke(0);
-  
-  // Drawing the board / grid
-  for (int i = border; i < columns - border; i++) {
-    for (int j = border; j < rows - border; j++) {
-      rect(i * box_size, j * box_size, box_size, box_size);
+    background(255);
+    fill(225);
+    stroke(0);
+    
+    // Drawing the board / grid
+    for (int i = border; i < columns - border; i++) {
+      for (int j = border; j < rows - border; j++) {
+        rect(i * box_size, j * box_size, box_size, box_size);
+      }
     }
-  }
-  
-  // Drawing the cursor
-  boolean on_character = false;
-  int character_index = 0;
-  
-  // Check if the cursor is on a character
-  for (var l = 0; l < character_array.length; l++) {
-    if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
-      on_character = true;
-      character_index = l;
-      break;
-    } 
-  }
-  
-  if (on_character) {
-    if (!selection) {
-      if (our_turn) {
-        if (character_array[character_index].friend) {
-          fill(0, 255, 0, 100);
+    
+    // Drawing the cursor
+    boolean on_character = false;
+    int character_index = 0;
+    
+    // Check if the cursor is on a character
+    for (var l = 0; l < character_array.length; l++) {
+      if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {   
+        on_character = true;
+        character_index = l;
+        break;
+      } 
+    }
+    
+    if (on_character) {
+      if (!selection) {
+        if (our_turn) {
+          if (character_array[character_index].friend) {
+            fill(0, 255, 0, 100);
+          } else {
+            fill(255, 0, 0, 100);
+          }
         } else {
-          fill(255, 0, 0, 100);
+          if (!character_array[character_index].friend) {
+            fill(0, 255, 0, 100);
+          } else {
+            fill(255, 0, 0, 100); 
+          }
         }
       } else {
-        if (!character_array[character_index].friend) {
-          fill(0, 255, 0, 100);
-        } else {
-          fill(255, 0, 0, 100); 
-        }
+        fill(0, 0, 0, 100); 
       }
     } else {
-      fill(0, 0, 0, 100); 
+      
+      // Cursor is not on any character, so colour red
+      fill(255, 0, 0, 100);
     }
-  } else {
     
-    // Cursor is not on any character, so colour red
-    fill(255, 0, 0, 100);
-  }
-  
-  rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
-  
-  // Drawing the characters 
-  for (int k = 0; k < character_array.length; k++) {
-    character_array[k].display();
-  }
-  
-  fill(0);
-  textSize(20);
-  
-  // Drawing other texts
-  if (selection) {
-    text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50); 
-  }
-  
-  text("Our Turn: " + our_turn, 50, 100);
+    rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
+    
+    // Drawing the characters 
+    for (int k = 0; k < character_array.length; k++) {
+      character_array[k].display();
+    }
+    
+    fill(0);
+    textSize(20);
+    
+    // Drawing other texts
+    if (selection) {
+      text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50); 
+    }
+    
+    text("Our Turn: " + our_turn, 50, 100);
   }
 }
 
@@ -226,127 +261,135 @@ void attack(Character character_1, Character character_2) {
 void keyPressed() {
   boolean character_moved = true;
   
-  // Keys to move the character if selected
-  if (selection && key == CODED) {
-    if (keyCode == UP && current_selection.y_position > border) {
-      
-      // Move character up
-      current_selection.change_y(-1);
-      
-      if (overlap()) {
+  //menu
+    if (key == 'l') {
+     gameState++; 
+    }
+  
+  if (gameState == 2) {
+    // Keys to move the character if selected
+    if (selection && key == CODED) {
+      if (keyCode == UP && current_selection.y_position > border) {
         
-        // Move is illegal, so go back
-        current_selection.change_y(1);
-        character_moved = false;
-      }
-    } else if (keyCode == DOWN && current_selection.y_position < rows - (border + 1)) {
-      
-      // Move character down
-      current_selection.change_y(1);
-      
-      if (overlap()) {
-        
-        // Move is illegal, so go back
+        // Move character up
         current_selection.change_y(-1);
-        character_moved = false;
-      }
-    } else if (keyCode == RIGHT && current_selection.x_position < columns - (border + 1)) {
-      
-      // Move character right
-      current_selection.change_x(1);
-      
-      if (overlap()) {
         
-        // Move is illegal, so go back
-        current_selection.change_x(-1);
-        character_moved = false;
-      }
-    } else if (keyCode == LEFT && current_selection.x_position > border) {
-      
-      // Move character left 
-      current_selection.change_x(-1);
-      
-      if (overlap()) {
+        if (overlap()) {
+          
+          // Move is illegal, so go back
+          current_selection.change_y(1);
+          character_moved = false;
+        }
+      } else if (keyCode == DOWN && current_selection.y_position < rows - (border + 1)) {
         
-        // Move is illegal, so go back
+        // Move character down
+        current_selection.change_y(1);
+        
+        if (overlap()) {
+          
+          // Move is illegal, so go back
+          current_selection.change_y(-1);
+          character_moved = false;
+        }
+      } else if (keyCode == RIGHT && current_selection.x_position < columns - (border + 1)) {
+        
+        // Move character right
         current_selection.change_x(1);
-        character_moved = false;
-      }
-    }
-  }
-  
-  // Keys to move the cursor
-  if (key == CODED) {
-    if (keyCode == UP && cursor_y > border) {
-      
-      // Move cursor up
-      cursor_y -= 1;
-      
-      if (!character_moved) {
         
-        // Character didn't move, so cursor can't move; go back
-        cursor_y += 1; 
-      }
-    } else if (keyCode == DOWN && cursor_y < rows - (border + 1)) {
-      
-      // Move cursor down
-      cursor_y += 1;
-      
-      if (!character_moved) {
-        
-        // Character didn't move, so cursor can't move; go back
-        cursor_y -= 1; 
-      }
-    } else if (keyCode == RIGHT && cursor_x < columns - (border + 1)) {
-      
-      // Move cursor right
-      cursor_x += 1;
-      
-      if (!character_moved) {
-        
-        // Character didn't move, so cursor can't move; go back
-        cursor_x -= 1; 
-      }
-    } else if (keyCode == LEFT && cursor_x > border) {
-      
-      // Move cursor left
-      cursor_x -= 1;
-      
-      if (!character_moved) {
-        
-        // Character didn't move, so cursor can't move; go back
-        cursor_x += 1; 
-      }
-    }
-  }
-  
-  // Keys to select a character
-  for (int i = 0; i < character_array.length; i++) {
-    if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
-      if (our_turn) {
-        if (character_array[i].friend) {
-          current_selection = character_array[i];
-          selection = true;
-          break;   
+        if (overlap()) {
+          
+          // Move is illegal, so go back
+          current_selection.change_x(-1);
+          character_moved = false;
         }
-      } else {
-        if (!character_array[i].friend) {
-          current_selection = character_array[i];
-          selection = true;
-          break; 
+      } else if (keyCode == LEFT && current_selection.x_position > border) {
+        
+        // Move character left 
+        current_selection.change_x(-1);
+        
+        if (overlap()) {
+          
+          // Move is illegal, so go back
+          current_selection.change_x(1);
+          character_moved = false;
         }
       }
     }
-  }
-  
-  // Keys to deselect a character
-  if ((key == 'R' || key == 'r') && selection) {
-    selection = false; 
     
-    if (our_turn) {
-      our_turn = false; 
-    } else {
-      our_turn = true; 
+    // Keys to move the cursor
+    if (key == CODED) {
+      if (keyCode == UP && cursor_y > border) {
+        
+        // Move cursor up
+        cursor_y -= 1;
+        
+        if (!character_moved) {
+          
+          // Character didn't move, so cursor can't move; go back
+          cursor_y += 1; 
+        }
+      } else if (keyCode == DOWN && cursor_y < rows - (border + 1)) {
+        
+        // Move cursor down
+        cursor_y += 1;
+        
+        if (!character_moved) {
+          
+          // Character didn't move, so cursor can't move; go back
+          cursor_y -= 1; 
+        }
+      } else if (keyCode == RIGHT && cursor_x < columns - (border + 1)) {
+        
+        // Move cursor right
+        cursor_x += 1;
+        
+        if (!character_moved) {
+          
+          // Character didn't move, so cursor can't move; go back
+          cursor_x -= 1; 
+        }
+      } else if (keyCode == LEFT && cursor_x > border) {
+        
+        // Move cursor left
+        cursor_x -= 1;
+        
+        if (!character_moved) {
+          
+          // Character didn't move, so cursor can't move; go back
+          cursor_x += 1; 
+        }
+      }
     }
+    
+    // Keys to select a character
+    for (int i = 0; i < character_array.length; i++) {
+      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
+        if (our_turn) {
+          if (character_array[i].friend) {
+            current_selection = character_array[i];
+            selection = true;
+            break;   
+          }
+        } else {
+          if (!character_array[i].friend) {
+            current_selection = character_array[i];
+            selection = true;
+            break; 
+          }
+        }
+      }
+    }
+    
+    // Keys to deselect a character
+    if ((key == 'R' || key == 'r') && selection) {
+      selection = false; 
+      
+      if (our_turn) {
+        our_turn = false; 
+      } else {
+        our_turn = true; 
+      }
+    }
+    
   }
 }
