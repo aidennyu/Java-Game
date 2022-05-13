@@ -39,8 +39,13 @@ Character current_selection;
 // Our turn first!
 boolean our_turn = true;
 
+//menu stuff
 PImage menu;
 PImage level;
+
+byte selectorWixoss = 0;
+
+
 // Function on start-up
 void setup() {
   //images ini
@@ -116,6 +121,8 @@ void setup() {
 // Function that refreshes every frame
 void draw() {
   if (gameState == 0) {
+    image(menu, 0, 0, 1000, 1000);
+    
           //green
       fill(0, 255, 0);
       
@@ -145,7 +152,9 @@ void draw() {
       arc(100, 125, 80, 50, 0, 3.14);
       line(60, 125, 140, 125);
       
-      image(menu, 0, 0, 1000, 1000);
+      noStroke();
+      fill(255, 0, 0, 100);
+      rect(200, 625 + 100 * selectorWixoss, 600, 100);
   }
   
   if (gameState == 1) {
@@ -262,9 +271,23 @@ void keyPressed() {
   boolean character_moved = true;
   
   //menu
-    if (key == 'l') {
+    if (key == 'l' && gameState < 4) {
      gameState++; 
     }
+    
+  if (gameState == 0) {
+    if (key == CODED) {
+      if (keyCode == UP) {
+         selectorWixoss += 1;
+         print(selectorWixoss);
+      }
+      if (keyCode == DOWN) {
+         selectorWixoss -= 1;
+         print(selectorWixoss);
+      }
+    }
+  }
+    
   
   if (gameState == 2) {
     // Keys to move the character if selected
