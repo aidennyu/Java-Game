@@ -202,6 +202,7 @@ boolean overlap() {
   return same_space;
 }
 
+
 // Attack function
 void attack(Character character_1, Character character_2) {
   if (character_2.health_points > 0) {
@@ -216,6 +217,7 @@ void attack(Character character_1, Character character_2) {
     character_2.health_points -= attack_value;
   }
 }
+
 
 // Function that calls when a key is pressed
 void keyPressed() {
