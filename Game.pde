@@ -119,7 +119,12 @@ void draw() {
     for (int j = border; j < rows - border; j++) {
       fill(225);
 
-      if (selection && j <= mem_character_x + current_selection.moves && i <= mem_character_y +current_selection.moves && j >= mem_character_x - current_selection.moves && i >= mem_character_y - current_selection.moves && !(j == cursor_x && i == cursor_y)) {
+      if (selection && j <= mem_character_x + current_selection.moves && 
+          i <= mem_character_y + current_selection.moves && 
+          j >= mem_character_x - current_selection.moves &&
+          i >= mem_character_y - current_selection.moves && 
+          !(j == cursor_x && i == cursor_y) &&
+          !(j == mem_character_x && i == mem_character_y)) {
         fill(0, 255, 0);
       }
 
