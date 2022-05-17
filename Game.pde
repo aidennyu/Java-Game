@@ -161,29 +161,31 @@ void draw() {
         break;
       } 
     }
-    
+    //CURSOR COLOUR ====
     if (on_character) {
       if (!selection) {
         if (our_turn) {
           if (character_array[character_index].friend) {
             fill(0, 255, 0, 100);
           } else {
-            fill(255, 0, 0, 100);
+            fill(100, 99, 22, 100);
           }
         } else {
           if (!character_array[character_index].friend) {
             fill(0, 255, 0, 100);
           } else {
-            fill(255, 0, 0, 100); 
+            fill(100, 99, 22, 100);
           }
         }
       } else {
         fill(0, 0, 0, 100); 
       }
     } else {
-      
-      // Cursor is not on any character, so colour red
-      fill(255, 0, 0, 100);
+        if (our_turn) {
+          fill(0, 0, 255, 100);
+        }else {
+          fill(255 ,0 ,0 ,100);
+        }
     }
     
     rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
