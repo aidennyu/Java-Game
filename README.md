@@ -1,4 +1,10 @@
-# v1.4 - Current Version
+# v1.5 - Current Version
+
+- Implemented an updated move function
+	- Move restrictions
+	- Move canceling
+
+# v1.4
 
 - Implemented an automatic turn-based system
 	- After every move, it switches turns
