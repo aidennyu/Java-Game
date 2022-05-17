@@ -80,7 +80,7 @@ void setup() {
     
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-      character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true); 
+      character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true, move_max); 
     }
   }
   
@@ -103,7 +103,7 @@ void setup() {
     
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-      character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false); 
+      character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false, move_max); 
     }
   }
 }
@@ -119,7 +119,7 @@ void draw() {
     for (int j = border; j < rows - border; j++) {
       fill(225);
       
-      if (selection && j <= mem_character_x + move_max && i <= mem_character_y + move_max && j >= mem_character_x - move_max && i >= mem_character_y - move_max && !(j == cursor_x && i == cursor_y)) {
+      if (selection && j <= mem_character_x + current_selection.moves && i <= mem_character_y +current_selection.moves && j >= mem_character_x - current_selection.moves && i >= mem_character_y - current_selection.moves && !(j == cursor_x && i == cursor_y)) {
         fill(0, 255, 0);
       }
       
@@ -242,40 +242,40 @@ void keyPressed() {
       // Move character up
       current_selection.change_y(-1);
       
-      if (overlap() || (current_selection.y_position > border || (current_selection.y_position >= mem_character_y + move_max && current_selection.y_position <= mem_character_y - move_max))) {
+      if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
         
         // Move is illegal, so go back
         current_selection.change_y(1);
         character_moved = false;
       }
-    } else if (keyCode == DOWN && current_selection.y_position < rows - (border + 1)) {
+    } else if (keyCode == DOWN) {
       
       // Move character down
       current_selection.change_y(1);
       
-      if (overlap()) {
+      if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
         
         // Move is illegal, so go back
         current_selection.change_y(-1);
         character_moved = false;
       }
-    } else if (keyCode == RIGHT && current_selection.x_position < columns - (border + 1)) {
+    } else if (keyCode == RIGHT) {
       
       // Move character right
       current_selection.change_x(1);
       
-      if (overlap()) {
+      if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
         
         // Move is illegal, so go back
         current_selection.change_x(-1);
         character_moved = false;
       }
-    } else if (keyCode == LEFT && current_selection.x_position > border) {
+    } else if (keyCode == LEFT) {
       
       // Move character left 
       current_selection.change_x(-1);
       
-      if (overlap()) {
+      if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
         
         // Move is illegal, so go back
         current_selection.change_x(1);
@@ -334,16 +334,22 @@ void keyPressed() {
     if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
       if (our_turn) {
         if (character_array[i].friend) {
+          
+          // Remember initial coordinates
           mem_character_x = cursor_x;
           mem_character_y = cursor_y;
+          
           current_selection = character_array[i];
           selection = true;
           break;   
         }
       } else {
         if (!character_array[i].friend) {
+          
+          // Remember initial coordinates
           mem_character_x = cursor_x;
           mem_character_y = cursor_y;
+          
           current_selection = character_array[i];
           selection = true;
           break; 
@@ -356,10 +362,13 @@ void keyPressed() {
   if ((key == 'R' || key == 'r') && selection) {
     selection = false; 
     
-    if (our_turn) {
-      our_turn = false; 
-    } else {
-      our_turn = true; 
+    // Check if character has moved from initial position
+    if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
+      if (our_turn) {
+        our_turn = false; 
+      } else {
+        our_turn = true; 
+      }  
     }
   }
 }
