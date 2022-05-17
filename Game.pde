@@ -45,7 +45,7 @@ PImage settingsMenu;
 
 byte selectorWixoss = 0;
 int xe = 0;
-
+int mem_character_x, mem_character_y;
 // Function on start-up
 void setup() {
   //images ini
@@ -229,6 +229,8 @@ void draw() {
   if (gameState == 3) {
     image(settingsMenu, 0, 0, 1000, 1000);
   }
+  }
+}
 
 
 // Function that checks if any two characters overlap
@@ -251,6 +253,7 @@ boolean overlap() {
 
   return same_space;
 }
+  
 
 
 // Attack function
@@ -271,103 +274,106 @@ void attack(Character character_1, Character character_2) {
 
 // Function that calls when a key is pressed
 void keyPressed() {
-  boolean character_moved = true;
-  
-  //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
-    if (key == 'l' && gameState < 2) {
-     if (selectorWixoss == -1) {
-         gameState = 3;
-     } else gameState++; 
-    }
-    if (key == 'k' && gameState > 0) {
-      if (gameState == 3) {
-         gameState = 0;
-     } else gameState--; 
-    }
-  
-  if (gameState == 0) {
-    if (key == CODED) {
-      //MENU SLECTOR DRAW RECT HTIGN
-      if (keyCode == DOWN && selectorWixoss != 0) {
-         selectorWixoss += 1;
-         print(selectorWixoss);
-      }
-      if (keyCode == UP && selectorWixoss != -1) {
-         selectorWixoss -= 1;
-         print(selectorWixoss);
-      }
+      boolean character_moved = true;
       
-      
-    }
-  }
-  //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
-  
-  if (gameState == 2) {
-    // Keys to move the character if selected
-  if (selection && key == CODED) {
-    if (keyCode == UP) {
-
-      // Move character up
-      current_selection.change_y(-1);
-
-      if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_y(1);
-        character_moved = false;
-      }
-    } else if (keyCode == DOWN) {
-
-      // Move character down
-      current_selection.change_y(1);
-
-      if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_y(-1);
-        character_moved = false;
-      }
-    } else if (keyCode == RIGHT) {
-
-      // Move character right
-      current_selection.change_x(1);
-
-      if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_x(-1);
-        character_moved = false;
-      }
-    } else if (keyCode == LEFT) {
-
-      // Move character left
-      current_selection.change_x(-1);
-
-      if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_x(1);
-        
-        if (overlap()) {
-          
-          // Move is illegal, so go back
-          current_selection.change_x(-1);
-          character_moved = false;
+      //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
+        if (key == 'l' && gameState < 2) {
+         if (selectorWixoss == -1) {
+             gameState = 3;
+         } else gameState++; 
         }
-      } else if (keyCode == LEFT && current_selection.x_position > border) {
-        
-        // Move character left 
-        current_selection.change_x(-1);
-        
-        if (overlap()) {
+        if (key == 'k' && gameState > 0) {
+          if (gameState == 3) {
+             gameState = 0;
+         } else gameState--; 
+        }
+      
+      if (gameState == 0) {
+        if (key == CODED) {
+          //MENU SLECTOR DRAW RECT HTIGN
+          if (keyCode == DOWN && selectorWixoss != 0) {
+             selectorWixoss += 1;
+             print(selectorWixoss);
+          }
+          if (keyCode == UP && selectorWixoss != -1) {
+             selectorWixoss -= 1;
+             print(selectorWixoss);
+          }
           
-          // Move is illegal, so go back
+          
+        }
+      }
+      //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
+      
+      if (gameState == 2) {
+        // Keys to move the character if selected
+      if (selection && key == CODED) {
+        if (keyCode == UP) {
+    
+          // Move character up
+          current_selection.change_y(-1);
+    
+          if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_y(1);
+            character_moved = false;
+          }
+        } else if (keyCode == DOWN) {
+    
+          // Move character down
+          current_selection.change_y(1);
+    
+          if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_y(-1);
+            character_moved = false;
+          }
+        } else if (keyCode == RIGHT) {
+    
+          // Move character right
           current_selection.change_x(1);
-          character_moved = false;
+    
+          if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_x(-1);
+            character_moved = false;
+          }
+        } else if (keyCode == LEFT) {
+    
+          // Move character left
+          current_selection.change_x(-1);
+    
+          if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_x(1);
+            
+            if (overlap()) {
+              
+              // Move is illegal, so go back
+              current_selection.change_x(-1);
+              character_moved = false;
+            }
+          } else if (keyCode == LEFT && current_selection.x_position > border) {
+            
+            // Move character left 
+            current_selection.change_x(-1);
+            
+            if (overlap()) {
+              
+              // Move is illegal, so go back
+              current_selection.change_x(1);
+              character_moved = false;
+            }
+          }
         }
       }
+      
     }
-  }
+
 
   // Keys to move the cursor
   if (key == CODED) {
