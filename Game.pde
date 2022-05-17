@@ -42,6 +42,7 @@ boolean our_turn = true;
 //menu stuff
 PImage menu;
 PImage level;
+PImage settingsIMG;
 
 byte selectorWixoss = 0;
 int xe = 0;
@@ -51,6 +52,7 @@ void setup() {
   //images ini
   menu = loadImage("AdvancedCars2.jpg");
   level = loadImage("cars.jpg");
+  settingsIMG = loadImage("Settings.png");
   
   // Initialize the size of the game window
   size(1000, 1000);
@@ -122,35 +124,7 @@ void setup() {
 void draw() {
   if (gameState == 0) {
     image(menu, 0, 0, 1000, 1000);
-    
-          //green
-      fill(0, 255, 0);
-      
-      //draw the head
-      
-      ellipse(100, 100, 150 , 50 + xe);
-      
-  
-      //white
-      fill(255);
-      
-      //draw the eyes
-      ellipse(75, 85, 30, 20);
-      ellipse(25, 85, 30, 20);
-      
-      //black
-      fill(0);
-      
-      //draw the pupils
-      ellipse(75, 85, 10, 10);
-      ellipse(25, 85, 10, 10);
-      
-      //red
-      fill(255, 0, 0);
-      
-      //draw the mouth
-      arc(100, 125, 80, 50, 0, 3.14);
-      line(60, 125, 140, 125);
+    image(settingsIMG, 260, 433, 478, 84);
       
       noStroke();
       fill(255, 0, 0, 100);
@@ -270,11 +244,14 @@ void attack(Character character_1, Character character_2) {
 void keyPressed() {
   boolean character_moved = true;
   
-  //menu
-    if (key == 'l' && gameState < 4) {
+  //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
+    if (keyCode == ENTER && gameState < 3) {
      gameState++; 
     }
-    
+    if (keyCode == BACKSPACE && gameState > 0) {
+     gameState--; 
+    }
+  
   if (gameState == 0) {
     if (key == CODED) {
       //MENU SLECTOR DRAW RECT HTIGN
@@ -286,13 +263,9 @@ void keyPressed() {
          selectorWixoss -= 1;
          print(selectorWixoss);
       }
-      if (keyCode == LEFT) {
-         xe++;
-         print(xe);
-      }
     }
   }
-    
+  //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
   
   if (gameState == 2) {
     // Keys to move the character if selected
