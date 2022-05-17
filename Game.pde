@@ -1,12 +1,3 @@
-/*
-  Author: Jovian Kuntjoro
-  
-  Description: 
-  This is the main code to a mini RPG game the Gr. 12's and me (cause I'm Gr. 11) are going to make as a "final project"
-  This is my branch of the game and soon, most probably, this code is going to be used in the final code for the finished game.
-*/
-
-
 // Global variables
 
 // Array of characters
@@ -41,6 +32,12 @@ Character current_selection;
 
 // Our turn first!
 boolean our_turn = true;
+
+// Move range restrictions
+int move_max = 2;
+
+// To remember our original position when moving a character
+int mem_character_x, mem_character_y;
 
 
 // Function on start-up
@@ -115,13 +112,18 @@ void setup() {
 // Function that refreshes every frame
 void draw() {
   background(255);
-  fill(225);
   stroke(0);
   
   // Drawing the board / grid
   for (int i = border; i < columns - border; i++) {
     for (int j = border; j < rows - border; j++) {
-      rect(i * box_size, j * box_size, box_size, box_size);
+      fill(225);
+      
+      if (selection && j <= mem_character_x + move_max && i <= mem_character_y + move_max && j >= mem_character_x - move_max && i >= mem_character_y - move_max && !(j == cursor_x && i == cursor_y)) {
+        fill(0, 255, 0);
+      }
+      
+      rect(j * box_size, i * box_size, box_size, box_size);
     }
   }
   
@@ -142,18 +144,28 @@ void draw() {
     if (!selection) {
       if (our_turn) {
         if (character_array[character_index].friend) {
+          
+          // Cursor is on a friendly character, so colour green
           fill(0, 255, 0, 100);
         } else {
+          
+          // Cursor is on an enemy character, so colour red
           fill(255, 0, 0, 100);
         }
       } else {
         if (!character_array[character_index].friend) {
+          
+          // Cursor is on a friendly character, so colour green
           fill(0, 255, 0, 100);
         } else {
+          
+          // Cursor is on an enemy character, so colour red
           fill(255, 0, 0, 100); 
         }
       }
     } else {
+      
+      // Character is currently selected, so colour black
       fill(0, 0, 0, 100); 
     }
   } else {
@@ -202,6 +214,7 @@ boolean overlap() {
   return same_space;
 }
 
+
 // Attack function
 void attack(Character character_1, Character character_2) {
   if (character_2.health_points > 0) {
@@ -217,18 +230,19 @@ void attack(Character character_1, Character character_2) {
   }
 }
 
+
 // Function that calls when a key is pressed
 void keyPressed() {
   boolean character_moved = true;
   
   // Keys to move the character if selected
   if (selection && key == CODED) {
-    if (keyCode == UP && current_selection.y_position > border) {
+    if (keyCode == UP) {
       
       // Move character up
       current_selection.change_y(-1);
       
-      if (overlap()) {
+      if (overlap() || (current_selection.y_position > border || (current_selection.y_position >= mem_character_y + move_max && current_selection.y_position <= mem_character_y - move_max))) {
         
         // Move is illegal, so go back
         current_selection.change_y(1);
@@ -320,12 +334,16 @@ void keyPressed() {
     if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) {
       if (our_turn) {
         if (character_array[i].friend) {
+          mem_character_x = cursor_x;
+          mem_character_y = cursor_y;
           current_selection = character_array[i];
           selection = true;
           break;   
         }
       } else {
         if (!character_array[i].friend) {
+          mem_character_x = cursor_x;
+          mem_character_y = cursor_y;
           current_selection = character_array[i];
           selection = true;
           break; 
