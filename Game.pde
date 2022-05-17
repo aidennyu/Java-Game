@@ -42,7 +42,8 @@ boolean our_turn = true;
 //menu stuff
 PImage menu;
 PImage level;
-PImage settingsIMG;
+PImage settingsOption;
+PImage settingsMenu;
 
 byte selectorWixoss = 0;
 int xe = 0;
@@ -52,7 +53,8 @@ void setup() {
   //images ini
   menu = loadImage("AdvancedCars2.jpg");
   level = loadImage("cars.jpg");
-  settingsIMG = loadImage("Settings.png");
+  settingsOption = loadImage("Settings.png");
+  settingsMenu = loadImage("SettingsMenu.jpg");
   
   // Initialize the size of the game window
   size(1000, 1000);
@@ -124,7 +126,7 @@ void setup() {
 void draw() {
   if (gameState == 0) {
     image(menu, 0, 0, 1000, 1000);
-    image(settingsIMG, 260, 433, 478, 84);
+    image(settingsOption, 260, 433, 478, 84);
       
       noStroke();
       fill(255, 0, 0, 100);
@@ -201,6 +203,10 @@ void draw() {
     
     text("Our Turn: " + our_turn, 50, 100);
   }
+  
+  if (gameState == 3) {
+    image(settingsMenu, 0, 0, 1000, 1000);
+  }
 }
 
 
@@ -245,11 +251,15 @@ void keyPressed() {
   boolean character_moved = true;
   
   //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
-    if (keyCode == ENTER && gameState < 3) {
-     gameState++; 
+    if (key == 'l' && gameState < 2) {
+     if (selectorWixoss == -1) {
+         gameState = 3;
+     } else gameState++; 
     }
-    if (keyCode == BACKSPACE && gameState > 0) {
-     gameState--; 
+    if (key == 'k' && gameState > 0) {
+      if (gameState == 3) {
+         gameState = 0;
+     } else gameState--; 
     }
   
   if (gameState == 0) {
@@ -263,6 +273,8 @@ void keyPressed() {
          selectorWixoss -= 1;
          print(selectorWixoss);
       }
+      
+      
     }
   }
   //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
