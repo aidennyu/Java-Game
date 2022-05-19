@@ -283,7 +283,7 @@ void keyPressed() {
              gameState = 3;
          } else gameState++; 
         }
-        if (key == 'k' && gameState > 0) {
+        if (key == 'k' && gameState > 0 && gameState != 2) {
           if (gameState == 3) {
              gameState = 0;
          } else gameState--; 
@@ -373,7 +373,6 @@ void keyPressed() {
         }
       }
       
-    }
 
 
   // Keys to move the cursor
@@ -420,6 +419,7 @@ void keyPressed() {
       }
     }
   }
+      }
 
   // Keys to select a character
   for (int i = 0; i < character_array.length; i++) {
