@@ -40,6 +40,7 @@ boolean our_turn = true;
 //menu stuff
 PImage menu;
 PImage level;
+PImage dog;
 PImage settingsOption;
 PImage settingsMenu;
 
@@ -50,7 +51,8 @@ int mem_character_x, mem_character_y;
 void setup() {
   //images ini
   menu = loadImage("AdvancedCars2.jpg");
-  level = loadImage("cars.jpg");
+  level = loadImage("WorldSelect.jpg");
+  dog = loadImage("dogCharacter.png");
   settingsOption = loadImage("Settings.png");
   settingsMenu = loadImage("SettingsMenu.jpg");
   
@@ -133,7 +135,7 @@ int mem_character_x, mem_character_y;
 
 
 // Function that refreshes every frame
-void draw() {
+void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   if (gameState == 0) {
     image(menu, 0, 0, 1000, 1000);
     image(settingsOption, 260, 433, 478, 84);
@@ -144,7 +146,10 @@ void draw() {
   }
   
   if (gameState == 1) {
-    image(level, 0, 0, 1000, 1000);
+    image(level, 0, 0, 1776, 1000);
+    
+    image(dog, 180, 420, 525/5, 510/5);
+    
   }
   
   if (gameState == 2) {
@@ -281,12 +286,20 @@ void keyPressed() {
         if (key == 'l' && gameState < 2) {
          if (selectorWixoss == -1) {
              gameState = 3;
-         } else gameState++; 
+             selectorWixoss = 0;
+         } else {
+           gameState++; 
+           selectorWixoss = 0;
+         }
         }
         if (key == 'k' && gameState > 0 && gameState != 2) {
           if (gameState == 3) {
              gameState = 0;
-         } else gameState--; 
+             selectorWixoss = -1;
+         } else {
+           gameState--; 
+           selectorWixoss = 0;
+         }
         }
       
       if (gameState == 0) {
@@ -297,6 +310,22 @@ void keyPressed() {
              print(selectorWixoss);
           }
           if (keyCode == UP && selectorWixoss != -1) {
+             selectorWixoss -= 1;
+             print(selectorWixoss);
+          }
+          
+          
+        }
+      }
+      
+      if (gameState == 1) { //LEVEL SELECTORRRRRRRRRRRRRRRRRRRRR
+        if (key == CODED) {
+          //DOG MOVE
+          if (keyCode == LEFT && selectorWixoss != 0) {
+             selectorWixoss += 1;
+             print(selectorWixoss);
+          }
+          if (keyCode == RIGHT && selectorWixoss != -1) {
              selectorWixoss -= 1;
              print(selectorWixoss);
           }
@@ -464,4 +493,8 @@ void keyPressed() {
     }
     
   }
+  
+
+
+
 }
