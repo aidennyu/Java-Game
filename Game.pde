@@ -380,25 +380,9 @@ void keyPressed() {
     
             // Move is illegal, so go back
             current_selection.change_x(1);
-            
-            if (overlap()) {
-              
-              // Move is illegal, so go back
-              current_selection.change_x(-1);
-              character_moved = false;
-            }
-          } else if (keyCode == LEFT && current_selection.x_position > border) {
-            
-            // Move character left 
-            current_selection.change_x(-1);
-            
-            if (overlap()) {
-              
-              // Move is illegal, so go back
-              current_selection.change_x(1);
-              character_moved = false;
-            }
-          }
+            character_moved = false;
+
+          } 
         }
       }
       
