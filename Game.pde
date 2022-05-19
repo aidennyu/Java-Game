@@ -226,9 +226,10 @@ void draw() {
 
   text("Our Turn: " + our_turn, 50, 100);
   
-  if (gameState == 3) {
+ }
+ 
+ if (gameState == 3) {
     image(settingsMenu, 0, 0, 1000, 1000);
-  }
   }
 }
 
