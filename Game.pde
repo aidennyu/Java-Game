@@ -32,10 +32,12 @@ Character current_selection;
 
 // Our turn first!
 boolean our_turn = true;
-boolean our_attack = true;
+boolean move_seq = true;
+boolean attack_seq = true;
 
 // Move range restrictions
 int move_max = 2;
+int attack_max = 1;
 
 // To remember our original position when moving a character
 int mem_character_x, mem_character_y;
@@ -81,7 +83,7 @@ void setup() {
 
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-      character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true, move_max);
+      character_array[i] = new Character(100, border + character_x, border + character_y, 10, 10, true, move_max);
     }
   }
 
@@ -104,7 +106,7 @@ void setup() {
 
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-      character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false, move_max);
+      character_array[k] = new Character(100, border + character_x, border + character_y, 10, 10, false, move_max);
     }
   }
 }
@@ -145,14 +147,26 @@ void draw() {
       break;
     }
   }
+  
+  if (selection) {
+    if (current_selection.is_dead()) {
+      selection = false; 
+    }
+  }
 
   if (on_character) {
     if (!selection) {
       if (our_turn) {
         if (character_array[character_index].friend) {
-
-          // Cursor is on a friendly character, so colour green
-          fill(0, 255, 0, 100);
+          if (character_array[character_index].is_dead()) {
+            
+            // Character is dead, so colour red
+            fill(255, 0, 0, 100);
+          } else {
+            
+            // Character is alive, so colour green
+            fill(0, 255, 0, 100); 
+          }
         } else {
 
           // Cursor is on an enemy character, so colour red
@@ -160,9 +174,15 @@ void draw() {
         }
       } else {
         if (!character_array[character_index].friend) {
-
-          // Cursor is on a friendly character, so colour green
-          fill(0, 255, 0, 100);
+          if (character_array[character_index].is_dead()) {
+            
+            // Character is dead, so colour re
+            fill(255, 0, 0, 100);
+          } else {
+            
+            // Character is alive, so colour green
+            fill(0, 255, 0, 100); 
+          }
         } else {
 
           // Cursor is on an enemy character, so colour red
@@ -193,10 +213,15 @@ void draw() {
   // Drawing other texts
   if (selection) {
     text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50);
+    
+    if (current_selection.can_attack) {
+      text("True", 50, 75); 
+    } else {
+      text("False", 50, 75); 
+    }
   }
 
   text("Our Turn: " + our_turn, 50, 100);
-  text("Our Attack: " + our_attack, 50, 75);
 }
 
 
@@ -223,18 +248,32 @@ boolean overlap() {
 
 
 // Attack function
-void attack(Character character_1, Character character_2) {
+int attack(Character character_1, Character character_2) {
+  int attack_value = 0;
+  
   if (character_2.health_points > 0) {
-    int range = 4;
-    int luck = int(random(range));
-
-    int attack = character_1.attack;
-    int defence = character_2.defence;
-
-    int attack_value = int(random(attack / defence) + (1 + luck));
-
-    character_2.health_points -= attack_value;
+    int base_damage = 1;
+    float luck = random(2) + 1;
+    
+    attack_value = int((base_damage * (character_1.health_points / 10) * (character_1.attack / character_2.defence)) * luck);
+    character_2.current_health_points -= attack_value;
+    
+    if (character_2.current_health_points < 0) {
+      character_2.current_health_points = 0;
+      character_2.is_dead();
+    }
+    
+    selection = false;
+    character_1.can_attack = false;
+    
+    if (our_turn) {
+      our_turn = false; 
+    } else {
+      our_turn = true; 
+    }
   }
+  
+  return attack_value;
 }
 
 
@@ -367,17 +406,33 @@ void keyPressed() {
       }
     }
   } else {
-    selection = false;
+    if (key == 'Q' || key == 'q') {
+      selection = false;
      
-    // Check if character has moved from initial position
-    if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
-      if (our_turn) {
-        our_turn = false;
-        our_attack = true;
-      } else {
-        our_turn = true;
-        our_attack = false;
-      }
+      // Check if character has moved from initial position
+      if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
+        if (our_turn) {
+          our_turn = false;
+          
+          for (int i = 0; i < character_array.length; i++) {
+            if (!character_array[i].can_attack) {
+              character_array[i].can_attack = true; 
+            }
+          }
+        } else {
+          our_turn = true;
+          
+          for (int i = 0; i < character_array.length; i++) {
+            if (!character_array[i].can_attack) {
+              character_array[i].can_attack = true; 
+            }
+          }
+        }
+      } 
     }
+  }
+  
+  if (selection && (key == 'A' || key == 'a')) {
+    attack(character_array[0], current_selection);
   }
 }
