@@ -171,7 +171,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     
     if (levelSelect > 0)
     image(dog, 180 + 300 * levelSelect, 420, 525/5, 510/5);
-   
+   //to select a world justmake a new gamestate for that world
     
   }
   
