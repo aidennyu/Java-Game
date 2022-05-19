@@ -7,9 +7,10 @@ class Character {
   int attack, defence;
   boolean dead;
   boolean friend;
+  int moves;
   
   // All the things a character should have
-  Character(int hp, int x, int y, int a, int d, boolean f) {
+  Character(int hp, int x, int y, int a, int d, boolean f, int m) {
     health_points = hp;
     current_health_points = hp;
     x_position = x;
@@ -17,6 +18,8 @@ class Character {
     attack = a;
     defence = d;
     friend = f;
+    moves = m;
+    // attack_range = 2 * round(random(0, 1)) + 1
     dead = false;
   }
   
