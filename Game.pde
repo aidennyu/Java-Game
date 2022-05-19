@@ -1,4 +1,4 @@
-// Global variables //<>//
+// Global variables //<>// //<>//
 
 
 //gamemenu
@@ -45,7 +45,8 @@ PImage settingsOption;
 PImage settingsMenu;
 
 byte selectorWixoss = 0;
-int xe = 0;
+byte levelSelect = 0;
+
 int mem_character_x, mem_character_y;
 // Function on start-up
 void setup() {
@@ -59,9 +60,6 @@ void setup() {
 
 // Move range restrictions
 int move_max = 2;
-
-// To remember our original position when moving a character
-int mem_character_x, mem_character_y;
 
 
 // Function on start-up
@@ -148,7 +146,32 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   if (gameState == 1) {
     image(level, 0, 0, 1776, 1000);
     
-    image(dog, 180, 420, 525/5, 510/5);
+    noStroke();
+    fill(255, 0, 0, 255);
+    
+    rect(210, 420, 50, 50);
+    rect(330 + 180, 500, 50, 50);
+    rect(630 + 180, 500, 50, 50);
+    
+    if (levelSelect == 0) {
+    fill(255, 255, 0, 255);
+    rect(210, 420, 50, 50);
+    }
+    if (levelSelect == 1) {
+    fill(255, 255, 0, 255);
+    rect(330 + 180, 500, 50, 50);
+    }
+    if (levelSelect == 2) {
+    fill(255, 255, 0, 255);
+    rect(630 + 180, 500, 50, 50);
+    }
+    
+    if (levelSelect == 0)
+    image(dog, 180, 340, 525/5, 510/5);
+    
+    if (levelSelect > 0)
+    image(dog, 180 + 300 * levelSelect, 420, 525/5, 510/5);
+   
     
   }
   
@@ -286,19 +309,19 @@ void keyPressed() {
         if (key == 'l' && gameState < 2) {
          if (selectorWixoss == -1) {
              gameState = 3;
-             selectorWixoss = 0;
+             selectorWixoss = 0; //resets var to deafult
          } else {
            gameState++; 
-           selectorWixoss = 0;
+           selectorWixoss = 0; //resets var
          }
         }
         if (key == 'k' && gameState > 0 && gameState != 2) {
           if (gameState == 3) {
              gameState = 0;
-             selectorWixoss = -1;
+             selectorWixoss = -1; //resets var to settings slot
          } else {
            gameState--; 
-           selectorWixoss = 0;
+           selectorWixoss = 0; //resets var
          }
         }
       
@@ -319,15 +342,16 @@ void keyPressed() {
       }
       
       if (gameState == 1) { //LEVEL SELECTORRRRRRRRRRRRRRRRRRRRR
+      
         if (key == CODED) {
           //DOG MOVE
-          if (keyCode == LEFT && selectorWixoss != 0) {
-             selectorWixoss += 1;
-             print(selectorWixoss);
+          if (keyCode == LEFT && levelSelect > 0) {
+             levelSelect -= 1;
+             println(levelSelect + "level");
           }
-          if (keyCode == RIGHT && selectorWixoss != -1) {
-             selectorWixoss -= 1;
-             print(selectorWixoss);
+          if (keyCode == RIGHT && levelSelect < 2) { //2 is number of levels
+             levelSelect += 1;
+             println(levelSelect + "level");
           }
           
           
