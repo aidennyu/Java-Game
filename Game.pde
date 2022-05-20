@@ -1,5 +1,8 @@
 // Global variables //<>// //<>//
 
+//audio import setup for way later:
+//import processing.sound.*;
+//SoundFile menuSong;
 
 //gamemenu
 byte gameState = 0;
@@ -56,6 +59,9 @@ void setup() {
   dog = loadImage("dogCharacter.png");
   settingsOption = loadImage("Settings.png");
   settingsMenu = loadImage("SettingsMenu.jpg");
+  
+  //initialize audio:
+  //menuSong = new SoundFile(this, "helghanForever.mp3");
   
 
 // Move range restrictions
@@ -141,6 +147,15 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       noStroke();
       fill(255, 0, 0, 100);
       rect(200, 625 + 200 * selectorWixoss, 600, 100);
+      
+   /* this is the basic setup for audio
+     if (menuSong.isPlaying() == false) {
+      menuSong.amp(0.4);
+      menuSong.play();
+      menuSong.jump(21);
+    }  */
+    
+    
   }
   
   if (gameState == 1) {
@@ -176,6 +191,8 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   }
   
   if (gameState == 2) {
+    //menuSong.stop();
+    
     background(255);
     fill(225);
     stroke(0);
