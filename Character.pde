@@ -5,7 +5,7 @@ class Character {
   int health_points, current_health_points;
   int x_position, y_position;
   int attack, defence;
-  boolean dead, friend, can_attack;
+  boolean dead, friend, can_attack, can_move;
   int moves, attack_range;
   
   // All the things a character should have
@@ -19,8 +19,9 @@ class Character {
     friend = f;
     moves = m;
     attack_range = 2 * round(random(0, 1)) + 1;
-    dead = false;
     can_attack = true;
+    can_move = true;
+    dead = false;
   }
   
   // Function that displays the character
