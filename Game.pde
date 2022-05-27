@@ -11,7 +11,7 @@ byte gameState = 0;
 Character[] character_array;
 
 // Initialize (temperary) amount of friendly and enemy characters
-int character_count = 4;
+int character_count = 5;
 int enemy_count = 5;
 
 // 2D array that'll hel keep track of initial starting positions of characters
@@ -32,6 +32,9 @@ int character_x, character_y;
 
 // Initialize the size of each square in the grid
 int box_size = 50;
+
+// HOW MUCH TERRAIN DO YOU WANT?
+int terrain_ponds = ;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
@@ -112,6 +115,10 @@ int move_max = 2;
       character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true, move_max);
     }
   }
+
+  //Randomized terrain (ponds for now)
+  for
+
 
   // Randomized initialization for enemy
   for (int k = character_count; k < enemy_count + character_count; k++) {
@@ -282,6 +289,13 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 // Function that checks if any two characters overlap
 boolean overlap() {
   boolean same_space = false;
+
+  //Check if the characer & terrain are overlapping
+  //for (int t = 0; t < 20; t++) {
+  //  if () {
+  //      same_space = true;
+  //      break;
+  //}
 
   // Check if any two characters are overlaping
   for (int i = 0; i < character_array.length; i++) {
