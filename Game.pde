@@ -281,8 +281,13 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   text("Our Turn: " + our_turn, 50, 100);
   
   //POND DISPLAY
+  
+  //position pond is where the pond is. Right now it is 1 for test. We can then change the variable to change in a list to build a level.
+  int position_pond = 1;
   fill(204,255,229);
-  rect(box_size, box_size, box_size, box_size);
+  //border * box_size makes it so the pond is now on the grid.
+  
+  rect((border * box_size) * position_pond, (border * box_size) * position_pond, box_size, box_size);
   
   
   
