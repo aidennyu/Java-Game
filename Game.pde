@@ -117,7 +117,6 @@ int move_max = 2;
   }
 
   //Randomized terrain (ponds for now)
-  for
 
 
   // Randomized initialization for enemy
