@@ -36,9 +36,11 @@ int box_size = 50;
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
 Character current_selection;
+//Number of people moved should equal total num of char on ur side before switching turns
+int numCharMoved;
 
 // Our turn first!
-boolean our_turn = true;
+boolean our_turn = false;
 
 //menu stuff
 PImage menu;
@@ -510,11 +512,19 @@ void keyPressed() {
 
     // Check if character has moved from initial position
     if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
-      if (our_turn) {
+      
+      numCharMoved ++;
+      if (our_turn && numCharMoved == character_count) {
         our_turn = false;
-      } else {
-        our_turn = true;
+        numCharMoved=0;
       }
+      if (!our_turn && numCharMoved == enemy_count) {
+        
+        
+        our_turn = true;
+        numCharMoved = 0;
+      }
+    
     }
     
   }
