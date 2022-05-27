@@ -1,6 +1,6 @@
 // Global variables //<>// //<>//
 
-//audio import setup for way later:
+//audio import setup for way later -
 //import processing.sound.*;
 //SoundFile menuSong;
 
