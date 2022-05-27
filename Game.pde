@@ -1,4 +1,4 @@
-// Global variables //<>// //<>//
+// Global variables //<>// //<>// //<>//
 
 //audio import setup for way later -
 //import processing.sound.*;
@@ -33,8 +33,12 @@ int character_x, character_y;
 // Initialize the size of each square in the grid
 int box_size = 50;
 
-// HOW MUCH TERRAIN DO YOU WANT?
-int terrain_ponds = 1;
+//Terrain Initializers
+int terrain_pond = 1;
+int terrain_posX = 0;
+int terrain_posY = 0;
+int terrain_test = 0;
+int terrain_total = terrain_pond + terrain_test;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
@@ -74,7 +78,6 @@ int move_max = 2;
 
 
 // Function on start-up
-
 
 
   // Initialize the size of the game window
@@ -117,8 +120,6 @@ int move_max = 2;
       character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true, move_max);
     }
   }
-
-  //Randomized terrain (ponds for now)
 
 
   // Randomized initialization for enemy
@@ -278,6 +279,12 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   }
 
   text("Our Turn: " + our_turn, 50, 100);
+  
+  //POND DISPLAY
+  fill(204,255,229);
+  rect(box_size, box_size, box_size, box_size);
+  
+  
   
  }
  
