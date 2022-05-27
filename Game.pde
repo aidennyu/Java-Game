@@ -123,7 +123,6 @@ int move_max = 2;
 
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-attack
       character_array[i] = new Character(100, border + character_x, border + character_y, 10, 10, true, move_max);
     }
   }
@@ -404,16 +403,17 @@ void keyPressed() {
 
       boolean character_moved = true;
       
-      //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
+      //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh yes
         if (key == 'l' && gameState < 2) {
-         if (selectorWixoss == -1) {
-             gameState = 3;
-             selectorWixoss = 0; //resets var to deafult
-         } else {
-           gameState++; 
-           selectorWixoss = 0; //resets var
-         }
+          if (selectorWixoss == -1) {
+            gameState = 3;
+            selectorWixoss = 0; //resets var to deafult
+          } else {
+            gameState++; 
+            selectorWixoss = 0; //resets var
+          }
         }
+        
         if (key == 'k' && gameState > 0 && gameState != 2) {
           if (gameState == 3) {
              gameState = 0;
@@ -460,52 +460,53 @@ void keyPressed() {
       
       if (gameState == 2) {
         // Keys to move the character if selected
-      if (selection && key == CODED) {
-        if (keyCode == UP) {
-    
-          // Move character up
-          current_selection.change_y(-1);
-    
-          if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
-    
-            // Move is illegal, so go back
-            current_selection.change_y(1);
-            character_moved = false;
-          }
-        } else if (keyCode == DOWN) {
-    
-          // Move character down
-          current_selection.change_y(1);
-    
-          if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
-    
-            // Move is illegal, so go back
+        if (selection && key == CODED) {
+          if (keyCode == UP) {
+      
+            // Move character up
             current_selection.change_y(-1);
-            character_moved = false;
-          }
-        } else if (keyCode == RIGHT) {
-    
-          // Move character right
-          current_selection.change_x(1);
-    
-          if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
-    
-            // Move is illegal, so go back
-            current_selection.change_x(-1);
-            character_moved = false;
-          }
-        } else if (keyCode == LEFT) {
-    
-          // Move character left
-          current_selection.change_x(-1);
-    
-          if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
-    
-            // Move is illegal, so go back
+      
+            if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
+      
+              // Move is illegal, so go back
+              current_selection.change_y(1);
+              character_moved = false;
+            }
+          } else if (keyCode == DOWN) {
+      
+            // Move character down
+            current_selection.change_y(1);
+      
+            if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
+      
+              // Move is illegal, so go back
+              current_selection.change_y(-1);
+              character_moved = false;
+            }
+          } else if (keyCode == RIGHT) {
+      
+            // Move character right
             current_selection.change_x(1);
-            character_moved = false;
-
-          } 
+      
+            if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
+      
+              // Move is illegal, so go back
+              current_selection.change_x(-1);
+              character_moved = false;
+            }
+          } else if (keyCode == LEFT) {
+      
+            // Move character left
+            current_selection.change_x(-1);
+      
+            if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
+      
+              // Move is illegal, so go back
+              current_selection.change_x(1);
+              character_moved = false;
+  
+            } 
+          }
         }
       }
 
@@ -638,11 +639,6 @@ void keyPressed() {
           }
         }
       } 
-    }
-    
+    } 
   }
-  
-
-
-
 }
