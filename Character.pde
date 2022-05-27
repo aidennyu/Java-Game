@@ -19,7 +19,6 @@ class Character {
     friend = f;
     moves = m;
     attack_range = 2 * round(random(0, 1)) + 1;
-    can_attack = true;
     can_move = true;
     dead = false;
   }

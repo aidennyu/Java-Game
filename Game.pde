@@ -37,10 +37,12 @@ boolean our_turn = true;
 
 // Move range restrictions
 int move_max = 2;
-int attack_max = 1;
 
 // To remember our original position when moving a character
 int mem_character_x, mem_character_y;
+
+int timer;
+int attack_value;
 
 
 // Function on start-up
@@ -60,6 +62,8 @@ void setup() {
   // Current selection is currently not selected to anything
   current_selection = null;
   attacker = null;
+  
+  timer = 0;
 
   // Variable to check if characters have the same coordinates
   boolean same_coordinates;
@@ -130,27 +134,6 @@ void draw() {
           !(j == cursor_x && i == cursor_y) &&
           !(j == mem_character_x && i == mem_character_y)) {
         fill(0, 255, 0);
-      }
-      
-      boolean valid_attack = false;
-      
-      if (attack_selection && current_selection.can_attack && j <= mem_character_x + current_selection.attack_range &&
-          i <= mem_character_y + current_selection.attack_range &&
-          j >= mem_character_x - current_selection.attack_range &&
-          i >= mem_character_y - current_selection.attack_range &&
-          !(j == cursor_x && i == cursor_y) &&
-          !(j == mem_character_x && i == mem_character_y)) {
-            
-        for (int m = 0; m < character_array.length; m++) {
-          if (j == character_array[m].x_position && i == character_array[m].y_position) {
-            valid_attack = true;
-            break;
-          }
-        }
-        
-        if (valid_attack) {
-          fill(0, 255, 0); 
-        }
       }
 
       rect(j * box_size, i * box_size, box_size, box_size);
@@ -236,12 +219,15 @@ void draw() {
   // Drawing other texts
   if (selection) {
     text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50);
-    
-    if (current_selection.can_attack) {
-      text("True", 50, 75); 
-    } else {
-      text("False", 50, 75); 
-    }
+  }
+  
+  if (attack_selection) {
+    text("Attack a player...", 50, 50); 
+  }
+  
+  if (timer > 0) {
+    text("Dealt " + attack_value + " damage!", 500, 50);
+    timer -= 5;
   }
 
   text("Our Turn: " + our_turn, 50, 100);
@@ -398,8 +384,6 @@ void keyPressed() {
     }
   }
   
-  int attack_value = 0;
-  
   if (!selection) {
     
     // Keys to select a character
@@ -431,7 +415,7 @@ void keyPressed() {
         
       // Keys to attack select and attack a character
       } else if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'A' || key == 'a') && !character_array[i].dead) {
-        if (!attack_selection && character_array[i].can_attack) {
+        if (!attack_selection) {
           if (our_turn && character_array[i].friend) {
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
@@ -439,7 +423,7 @@ void keyPressed() {
             attack_selection = true;
             attacker = character_array[i];
             break;
-          } else if (!our_turn && !character_array[i].friend)
+          } else if (!our_turn && !character_array[i].friend) {
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
             
@@ -447,14 +431,14 @@ void keyPressed() {
             attacker = character_array[i];
             break;
           }  
-        } else if (attack_selection) {
-          if (our_turn && character_array[i].friend) {
+        } else {
+          if (our_turn && !character_array[i].friend) {
+            timer = 1000;
             attack_value = attack(attacker, character_array[i]); 
-            attacker.can_attack = false;
             attack_selection = false;
-          } else if (!our_turn && !character_array[i].friend) {
+          } else if (!our_turn && character_array[i].friend) {
+            timer = 1000;
             attack_value = attack(attacker, character_array[i]); 
-            attacker.can_attack = false;
             attack_selection = false;
           }
         }
