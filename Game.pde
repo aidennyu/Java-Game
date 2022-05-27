@@ -34,7 +34,7 @@ int character_x, character_y;
 int box_size = 50;
 
 // HOW MUCH TERRAIN DO YOU WANT?
-int terrain_ponds = ;
+int terrain_ponds = 1;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
