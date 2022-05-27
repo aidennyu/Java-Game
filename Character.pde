@@ -5,6 +5,7 @@ class Character {
   int health_points, current_health_points;
   int x_position, y_position;
   int attack, defence;
+
   boolean dead, friend, can_attack, can_move;
   int moves, attack_range;
   

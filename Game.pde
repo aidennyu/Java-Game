@@ -1,10 +1,18 @@
-// Global variables //<>//
+// Global variables
+
+//audio import setup for way later -
+//import processing.sound.*;
+//SoundFile menuSong;
+
+//gamemenu
+byte gameState = 0;
+
 
 // Array of characters
 Character[] character_array;
 
 // Initialize (temperary) amount of friendly and enemy characters
-int character_count = 4;
+int character_count = 5;
 int enemy_count = 5;
 
 // 2D array that'll hel keep track of initial starting positions of characters
@@ -26,27 +34,53 @@ int character_x, character_y;
 // Initialize the size of each square in the grid
 int box_size = 50;
 
+// HOW MUCH TERRAIN DO YOU WANT?
+int terrain_ponds = 1;
+
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
 Character current_selection;
+
 boolean attack_selection = false;
 Character attacker;
+//Number of people moved should equal total num of char on ur side before switching turns
+int numCharMoved;
 
 // Our turn first!
-boolean our_turn = true;
+boolean our_turn = false;
 
-// Move range restrictions
-int move_max = 2;
-
-// To remember our original position when moving a character
-int mem_character_x, mem_character_y;
+//menu stuff
+PImage menu;
+PImage level;
+PImage dog;
+PImage settingsOption;
+PImage settingsMenu;
 
 int timer;
 int attack_value;
 
+byte selectorWixoss = 0;
+byte levelSelect = 0;
 
+int mem_character_x, mem_character_y;
 // Function on start-up
 void setup() {
+  //images ini
+  menu = loadImage("AdvancedCars2.jpg");
+  level = loadImage("WorldSelect.jpg");
+  dog = loadImage("dogCharacter.png");
+  settingsOption = loadImage("Settings.png");
+  settingsMenu = loadImage("SettingsMenu.jpg");
+  
+  //initialize audio:
+  //menuSong = new SoundFile(this, "helghanForever.mp3");
+  
+
+// Move range restrictions
+int move_max = 2;
+
+
+// Function on start-up
 
   // Initialize the size of the game window
   size(1000, 1000);
@@ -61,6 +95,7 @@ void setup() {
 
   // Current selection is currently not selected to anything
   current_selection = null;
+
   attacker = null;
   
   timer = 0;
@@ -88,9 +123,12 @@ void setup() {
 
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
+attack
       character_array[i] = new Character(100, border + character_x, border + character_y, 10, 10, true, move_max);
     }
   }
+  
+//Randomized terrain (ponds for now)
 
   // Randomized initialization for enemy
   for (int k = character_count; k < enemy_count + character_count; k++) {
@@ -118,11 +156,66 @@ void setup() {
 
 
 // Function that refreshes every frame
-void draw() {
-  background(255);
-  stroke(0);
 
-  // Drawing the board / grid
+void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+  if (gameState == 0) {
+    image(menu, 0, 0, 1000, 1000);
+    image(settingsOption, 260, 433, 478, 84);
+      
+      noStroke();
+      fill(255, 0, 0, 100);
+      rect(200, 625 + 200 * selectorWixoss, 600, 100);
+      
+   /* this is the basic setup for audio
+     if (menuSong.isPlaying() == false) {
+      menuSong.amp(0.4);
+      menuSong.play();
+      menuSong.jump(21);
+    }  */
+    
+    
+  }
+  
+  if (gameState == 1) {
+    image(level, 0, 0, 1776, 1000);
+    
+    noStroke();
+    fill(255, 0, 0, 255);
+    
+    rect(210, 420, 50, 50);
+    rect(330 + 180, 500, 50, 50);
+    rect(630 + 180, 500, 50, 50);
+    
+    if (levelSelect == 0) {
+    fill(255, 255, 0, 255);
+    rect(210, 420, 50, 50);
+    }
+    if (levelSelect == 1) {
+    fill(255, 255, 0, 255);
+    rect(330 + 180, 500, 50, 50);
+    }
+    if (levelSelect == 2) {
+    fill(255, 255, 0, 255);
+    rect(630 + 180, 500, 50, 50);
+    }
+    
+    if (levelSelect == 0)
+    image(dog, 180, 340, 525/5, 510/5);
+    
+    if (levelSelect > 0)
+    image(dog, 180 + 300 * levelSelect, 420, 525/5, 510/5);
+   //to select a world justmake a new gamestate for that world
+    
+  }
+  
+  if (gameState == 2) {
+    //menuSong.stop();
+    
+    background(255);
+    fill(225);
+    stroke(0);
+    
+    // Drawing the board / grid
   for (int i = border; i < columns - border; i++) {
     for (int j = border; j < rows - border; j++) {
       fill(225);
@@ -140,7 +233,9 @@ void draw() {
     }
   }
 
+
   // Drawing the cursor
+
   boolean on_character = false;
   int character_index = 0;
 
@@ -152,6 +247,7 @@ void draw() {
       break;
     }
   }
+
   
   // Deselect if selected character is dead
   if (selection) {
@@ -230,13 +326,29 @@ void draw() {
     timer -= 5;
   }
 
+
   text("Our Turn: " + our_turn, 50, 100);
+  
+ }
+ 
+ if (gameState == 3) {
+    image(settingsMenu, 0, 0, 1000, 1000);
+  }
 }
 
 
 // Function that checks if any two characters overlap
 boolean overlap() {
   boolean same_space = false;
+
+
+  //Check if the characer & terrain are overlapping
+  //for (int t = 0; t < 20; t++) {
+  //  if () {
+  //      same_space = true;
+  //      break;
+  //}
+
 
   // Check if any two characters are overlaping
   for (int i = 0; i < character_array.length; i++) {
@@ -254,6 +366,7 @@ boolean overlap() {
 
   return same_space;
 }
+  
 
 
 // Attack function
@@ -288,56 +401,113 @@ int attack(Character character_1, Character character_2) {
 
 // Function that calls when a key is pressed
 void keyPressed() {
-  boolean character_moved = true;
 
-  // Keys to move the character if selected
-  if (selection && key == CODED) {
-    if (keyCode == UP) {
-
-      // Move character up
-      current_selection.change_y(-1);
-
-      if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_y(1);
-        character_moved = false;
+      boolean character_moved = true;
+      
+      //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
+        if (key == 'l' && gameState < 2) {
+         if (selectorWixoss == -1) {
+             gameState = 3;
+             selectorWixoss = 0; //resets var to deafult
+         } else {
+           gameState++; 
+           selectorWixoss = 0; //resets var
+         }
+        }
+        if (key == 'k' && gameState > 0 && gameState != 2) {
+          if (gameState == 3) {
+             gameState = 0;
+             selectorWixoss = -1; //resets var to settings slot
+         } else {
+           gameState--; 
+           selectorWixoss = 0; //resets var
+         }
+        }
+      
+      if (gameState == 0) {
+        if (key == CODED) {
+          //MENU SLECTOR DRAW RECT HTIGN
+          if (keyCode == DOWN && selectorWixoss != 0) {
+             selectorWixoss += 1;
+             print(selectorWixoss);
+          }
+          if (keyCode == UP && selectorWixoss != -1) {
+             selectorWixoss -= 1;
+             print(selectorWixoss);
+          }
+          
+          
+        }
       }
-    } else if (keyCode == DOWN) {
-
-      // Move character down
-      current_selection.change_y(1);
-
-      if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_y(-1);
-        character_moved = false;
+      
+      if (gameState == 1) { //LEVEL SELECTORRRRRRRRRRRRRRRRRRRRR
+      
+        if (key == CODED) {
+          //DOG MOVE
+          if (keyCode == LEFT && levelSelect > 0) {
+             levelSelect -= 1;
+             println(levelSelect + "level");
+          }
+          if (keyCode == RIGHT && levelSelect < 2) { //2 is number of levels
+             levelSelect += 1;
+             println(levelSelect + "level");
+          }
+          
+          
+        }
       }
-    } else if (keyCode == RIGHT) {
+      //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
+      
+      if (gameState == 2) {
+        // Keys to move the character if selected
+      if (selection && key == CODED) {
+        if (keyCode == UP) {
+    
+          // Move character up
+          current_selection.change_y(-1);
+    
+          if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_y(1);
+            character_moved = false;
+          }
+        } else if (keyCode == DOWN) {
+    
+          // Move character down
+          current_selection.change_y(1);
+    
+          if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_y(-1);
+            character_moved = false;
+          }
+        } else if (keyCode == RIGHT) {
+    
+          // Move character right
+          current_selection.change_x(1);
+    
+          if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_x(-1);
+            character_moved = false;
+          }
+        } else if (keyCode == LEFT) {
+    
+          // Move character left
+          current_selection.change_x(-1);
+    
+          if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
+    
+            // Move is illegal, so go back
+            current_selection.change_x(1);
+            character_moved = false;
 
-      // Move character right
-      current_selection.change_x(1);
-
-      if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_x(-1);
-        character_moved = false;
+          } 
+        }
       }
-    } else if (keyCode == LEFT) {
-
-      // Move character left
-      current_selection.change_x(-1);
-
-      if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
-
-        // Move is illegal, so go back
-        current_selection.change_x(1);
-        character_moved = false;
-      }
-    }
-  }
 
   // Keys to move the cursor
   if (key == CODED) {
@@ -469,5 +639,10 @@ void keyPressed() {
         }
       } 
     }
+    
   }
+  
+
+
+
 }
