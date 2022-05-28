@@ -10,6 +10,9 @@ byte gameState = 0;
 // Array of characters
 Character[] character_array;
 
+//Array of TERRAIN
+Terrain[] terrain_array;
+
 // Initialize (temperary) amount of friendly and enemy characters
 int character_count = 5;
 int enemy_count = 5;
@@ -35,10 +38,8 @@ int box_size = 50;
 
 //Terrain Initializers
 int terrain_pond = 1;
-int terrain_Ypos = 0;
-int terrain_Xpos = 0;
 int terrain_test = 0;
-int terrain_total = terrain_pond + terrain_test;
+int terrain_count = 1;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
@@ -91,26 +92,21 @@ int move_max = 2;
   character_array = new Character[character_count + enemy_count];
   initial_positions = new int[character_count + enemy_count][2];
   
-  /* WIP GENERATION
-  // Initialize terrain array. terrain.total but for now 2
-  terrainGeneration = new Terrain[2];
 
-  //make terrain based of off generation number
-  for (int t = 0; t < terrainGeneration.length; t++) {
-    
-    //generation seed
-    worldSeed_A_xPos = new int[t];
-    worldSeed_A_yPos = new int[t];
-    
-    terrainGeneration[t] = new Terrain(border + worldSeed_A_xPos, border + worldSeed_A_yPos, true, 2);
+  // Initialize TERRAIN array
+  terrain_array = new Terrain[terrain_count];
   }
-  */
-  
+
   // Current selection is currently not selected to anything
   current_selection = null;
 
   // Variable to check if characters have the same coordinates
   boolean same_coordinates;
+  
+  for (int t = 0; t < terrain_count; t++) {
+    terrain_array[t] = new Terrain(1, 2, true, "lake", 3);
+  }
+  
 
   // Randomized initialization for team
   for (int i = 0; i < character_count; i++) {
@@ -158,7 +154,6 @@ int move_max = 2;
     if (!same_coordinates) {
       character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false, move_max);
     }
-  }
 }
 
 
@@ -285,6 +280,11 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       character_array[k].display();
     }
     
+    // Drawing the terrain
+    for (int t = 0; t < terrain_array.length; t++) {
+      character_array[t].display();
+    }
+    
     fill(0);
     textSize(20);
     
@@ -295,14 +295,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
   text("Our Turn: " + our_turn, 50, 100);
   
-  //POND DISPLAY
-  
-  //position pond is where the pond is. Right now it is 1 for test. We can then change the variable to change in a list to build a level.
-  int position_pond = 1;
-  fill(204,255,229);
-  //border * box_size makes it so the pond is now on the grid.
-  
-  rect((border * box_size) * position_pond, (border * box_size) * position_pond, box_size, box_size);
   
   
   
