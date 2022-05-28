@@ -14,7 +14,7 @@ Character[] character_array;
 int character_count = 5;
 int enemy_count = 5;
 
-// 2D array that'll hel keep track of initial starting positions of characters
+// 2D array that'll help keep track of initial starting positions of characters
 int[][] initial_positions;
 
 // How far from the edge of the screen is the border?
@@ -35,8 +35,8 @@ int box_size = 50;
 
 //Terrain Initializers
 int terrain_pond = 1;
-int terrain_posX = 0;
-int terrain_posY = 0;
+int terrain_Ypos = 0;
+int terrain_Xpos = 0;
 int terrain_test = 0;
 int terrain_total = terrain_pond + terrain_test;
 
@@ -90,7 +90,22 @@ int move_max = 2;
   // Initialize the character array and initial positions 2D array
   character_array = new Character[character_count + enemy_count];
   initial_positions = new int[character_count + enemy_count][2];
+  
+  /* WIP GENERATION
+  // Initialize terrain array. terrain.total but for now 2
+  terrainGeneration = new Terrain[2];
 
+  //make terrain based of off generation number
+  for (int t = 0; t < terrainGeneration.length; t++) {
+    
+    //generation seed
+    worldSeed_A_xPos = new int[t];
+    worldSeed_A_yPos = new int[t];
+    
+    terrainGeneration[t] = new Terrain(border + worldSeed_A_xPos, border + worldSeed_A_yPos, true, 2);
+  }
+  */
+  
   // Current selection is currently not selected to anything
   current_selection = null;
 
