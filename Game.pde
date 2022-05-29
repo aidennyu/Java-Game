@@ -138,6 +138,10 @@ int move_max = 2;
     // Randomize the x and y coordinates of the character
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
+    //test for terrain coordinates
+    print(character_x + ", ");
+    println(character_y);
+    terrain_array[0].coordinate_Test();
 
     // Check if the x and y coordinates match any other character
     for (int l = 0; l < initial_positions.length; l++) {
@@ -304,12 +308,22 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 boolean overlap() {
   boolean same_space = false;
 
-  //Check if the characer & terrain are overlapping
-  //for (int t = 0; t < 20; t++) {
-  //  if () {
-  //      same_space = true;
-  //      break;
-  //}
+  //the overlap works by scanning the each charatcer's position with every other character in the array. If both coords are the same OVERLAP TRUE
+  // the (i != j) means if the character is not itself, check for the x and y conditions.
+
+  //Check if terrain and character are overlapping
+  for (int i = 0; i < character_array.length; i++) {
+    for (int j = 0; j < terrain_array.length; j++) {
+      if (character_array[i].x_position == terrain_array[j].xPos && character_array[i].y_position == terrain_array[j].yPos && terrain_array[j].block == true) {
+        same_space = true;
+        break;
+      }
+    }
+    
+    if (same_space) {
+      break;
+    }
+  }
 
   // Check if any two characters are overlaping
   for (int i = 0; i < character_array.length; i++) {
@@ -411,7 +425,8 @@ void keyPressed() {
     
           // Move character up
           current_selection.change_y(-1);
-    
+    println(character_array[9].x_position + ", " + character_array[5].y_position);
+  
           if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
     
             // Move is illegal, so go back
