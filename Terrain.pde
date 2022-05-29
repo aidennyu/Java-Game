@@ -42,5 +42,6 @@ class Terrain {
   void worldgen_A() {
     //You need about 10 terrains
     print("i have no idea how to make a coordinated list");
+    //array of x and y to main x and y generation terrain
   }
 }
