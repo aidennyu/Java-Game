@@ -2,16 +2,16 @@
 class Terrain {
   
   //initialize variables
-  private byte xPos;
-  private byte yPos;
+  private int xPos;
+  private int yPos;
   private boolean block;
   private String type;
-  private byte border;
+  private int border;
   //types are "lake" for now
   
   
   //constructor
-  Terrain(byte xPos, byte yPos, boolean block, String type, byte border) {
+  Terrain(int xPos, int yPos, boolean block, String type, int border) {
    this.xPos = xPos;
    this.yPos = yPos;
    this.block = block;
@@ -24,6 +24,7 @@ class Terrain {
     fill(204,255,229);
     
     //border * box_size makes it so the pond is now on the grid.
-    rect((border * 50) * xPos, (border * 50) * yPos, 50, 50);
+    //the -1 beside POS is to make the grid coordinates start at 1, not 0 to make worlds easier
+    rect((border * 50) + (50 * (xPos - 1)), (border * 50) + (50 * (yPos - 1)), 50, 50);
   }
 }

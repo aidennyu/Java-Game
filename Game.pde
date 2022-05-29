@@ -37,8 +37,6 @@ int character_x, character_y;
 int box_size = 50;
 
 //Terrain Initializers
-int terrain_pond = 1;
-int terrain_test = 0;
 int terrain_count = 1;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
@@ -95,7 +93,7 @@ int move_max = 2;
 
   // Initialize TERRAIN array
   terrain_array = new Terrain[terrain_count];
-  }
+
 
   // Current selection is currently not selected to anything
   current_selection = null;
@@ -104,7 +102,7 @@ int move_max = 2;
   boolean same_coordinates;
   
   for (int t = 0; t < terrain_count; t++) {
-    terrain_array[t] = new Terrain(1, 2, true, "lake", 3);
+    terrain_array[t] = new Terrain(1, 1, true, "lake", 3);
   }
   
 
@@ -154,6 +152,7 @@ int move_max = 2;
     if (!same_coordinates) {
       character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false, move_max);
     }
+  }
 }
 
 
@@ -238,7 +237,12 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   boolean on_character = false;
   int character_index = 0;
 
-  // Check if the cursor is on a character
+  // Drawing the terrain
+    for (int t = 0; t < terrain_array.length; t++) {
+      terrain_array[t].display();
+    }
+
+  // Check if the cursor is on a character AND/OR terrain blockers
   for (var l = 0; l < character_array.length; l++) {
     if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {
       on_character = true;
@@ -251,38 +255,32 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       if (!selection) {
         if (our_turn) {
           if (character_array[character_index].friend) {
-            fill(0, 255, 0, 100);
+            fill(0, 255, 0, 255);
           } else {
-            fill(100, 99, 22, 100);
+            fill(100, 99, 22, 255);
           }
         } else {
           if (!character_array[character_index].friend) {
-            fill(0, 255, 0, 100);
+            fill(50, 255, 50, 255);
           } else {
-            fill(100, 99, 22, 100);
+            fill(120, 120, 120, 255);
           }
         }
       } else {
-        fill(0, 0, 0, 100); 
+        fill(70, 70, 70, 255); 
       }
     } else {
         if (our_turn) {
-          fill(0, 0, 255, 100);
+          fill(0, 0, 255, 255);
         }else {
-          fill(255 ,0 ,0 ,100);
+          fill(255 ,153 ,153 ,255);
         }
     }
-    
     rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
     
     // Drawing the characters 
     for (int k = 0; k < character_array.length; k++) {
       character_array[k].display();
-    }
-    
-    // Drawing the terrain
-    for (int t = 0; t < terrain_array.length; t++) {
-      character_array[t].display();
     }
     
     fill(0);
@@ -294,10 +292,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   }
 
   text("Our Turn: " + our_turn, 50, 100);
-  
-  
-  
-  
  }
  
  if (gameState == 3) {
