@@ -1,4 +1,4 @@
-// Global variables //<>// //<>// //<>//
+`// Global variables //<>// //<>// //<>//
 
 //audio import setup for way later -
 //import processing.sound.*;
@@ -36,8 +36,8 @@ int character_x, character_y;
 // Initialize the size of each square in the grid
 int box_size = 50;
 
-//Terrain Initializers
-int terrain_count = 1;
+//Initialize terrain amount
+int terrain_count = 6;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
@@ -102,13 +102,18 @@ int move_max = 2;
   boolean same_coordinates;
   
   //terrain generation
-  //terrain pond at 4,4
-  for (int t = 0; t < terrain_count; t++) {
-    terrain_array[t] = new Terrain(4, 4, true, "pond", 3);
-  }
+  //for (int t = 0; t < terrain_count; t++) {}
+    terrain_array[0] = new Terrain(4, 4, true, "pond", 3);
+    terrain_array[1] = new Terrain(4, 5, true, "pond", 3);
+    terrain_array[2] = new Terrain(4, 6, true, "pond", 3);
+    terrain_array[3] = new Terrain(4, 7, true, "pond", 3);
+    terrain_array[4] = new Terrain(5, 4, true, "pond", 3);
+    terrain_array[5] = new Terrain(5, 5, true, "pond", 3);
+  
   
 
   // Randomized initialization for team
+  //ALRIGHT I HAVE NO IDEA IF THIS WORKS 
   for (int i = 0; i < character_count; i++) {
 
     same_coordinates = false;
@@ -117,11 +122,13 @@ int move_max = 2;
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
 
-    // Check if the x and y coordinates match placed terrain
-    for (int t = 0; t < terrain_array.length; t++) {
-      for (int j = 0; j < initial_positions.length; j++) {
-        if (terrain_array[t].xPos == initial_positions[j][0] && terrain_array[t].yPos == initial_positions[j][1]) {
+
+     // Check if the x and y coordinates match placed terrain (idk if this works)
+    for (int t = 0; t < initial_positions.length; t++) {
+      for (int j = 0; j < terrain_array.length; j++) {
+        if (terrain_array[j].xPos == initial_positions[t][0] && terrain_array[j].yPos == initial_positions[t][1]) {
           same_coordinates = true;
+          print("terrain same");
           i--;
           break;
         }
@@ -132,6 +139,7 @@ int move_max = 2;
     for (int j = 0; j < initial_positions.length; j++) {
       if (character_x == initial_positions[j][0] && character_y == initial_positions[j][1]) {
         same_coordinates = true;
+        print("character same");
         i--;
         break;
       }
@@ -152,11 +160,11 @@ int move_max = 2;
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
     //test for terrain coordinates
-    print(character_x + ", ");
-    println(character_y);
-    terrain_array[0].coordinate_Test();
+    //print(character_x + ", ");
+    //println(character_y);
+    //terrain_array[0].coordinate_Test();
 
-    // Check if the x and y coordinates match any other character
+     Check if the x and y coordinates match any other character
     for (int l = 0; l < initial_positions.length; l++) {
       if (character_x == initial_positions[l][0] && character_y == initial_positions[l][1]) {
         same_coordinates = true;
