@@ -25,7 +25,7 @@ class Terrain {
     
     //border * box_size makes it so the pond is now on the grid.
     //the -1 beside POS is to make the grid coordinates start at 1, not 0 to make worlds easier (nvm i removed it)
-    rect((border * 50) + (50 * xPos), (border * 50) + (50 * yPos), 50, 50);
+    rect((50 * xPos), (50 * yPos), 50, 50);
   }
   
   void coordinate_Test() {

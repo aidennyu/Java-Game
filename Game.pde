@@ -102,7 +102,7 @@ int move_max = 2;
   boolean same_coordinates;
   
   for (int t = 0; t < terrain_count; t++) {
-    terrain_array[t] = new Terrain(1, 1, true, "lake", 3);
+    terrain_array[t] = new Terrain(4, 4, true, "lake", 3);
   }
   
 
@@ -246,7 +246,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       terrain_array[t].display();
     }
 
-  // Check if the cursor is on a character AND/OR terrain blockers
+  // Check if the cursor is on a character
   for (var l = 0; l < character_array.length; l++) {
     if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {
       on_character = true;
@@ -425,7 +425,8 @@ void keyPressed() {
     
           // Move character up
           current_selection.change_y(-1);
-    println(character_array[9].x_position + ", " + character_array[5].y_position);
+          //0,0 on the board is actually 4, 4 for some reason
+    println(current_selection.x_position + ", " + current_selection.y_position);
   
           if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
     
