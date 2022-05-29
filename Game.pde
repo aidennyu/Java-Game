@@ -101,8 +101,10 @@ int move_max = 2;
   // Variable to check if characters have the same coordinates
   boolean same_coordinates;
   
+  //terrain generation
+  //terrain pond at 4,4
   for (int t = 0; t < terrain_count; t++) {
-    terrain_array[t] = new Terrain(4, 4, true, "lake", 3);
+    terrain_array[t] = new Terrain(4, 4, true, "pond", 3);
   }
   
 
@@ -114,6 +116,17 @@ int move_max = 2;
     // Randomize the x and y coordinates of the character
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
+
+    // Check if the x and y coordinates match placed terrain
+    for (int t = 0; t < terrain_array.length; t++) {
+      for (int j = 0; j < initial_positions.length; j++) {
+        if (terrain_array[t].xPos == initial_positions[j][0] && terrain_array[t].yPos == initial_positions[j][1]) {
+          same_coordinates = true;
+          i--;
+          break;
+        }
+      }
+    }
 
     // Check if the x and y coordinates match any other character
     for (int j = 0; j < initial_positions.length; j++) {

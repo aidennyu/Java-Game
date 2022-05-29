@@ -7,7 +7,9 @@ class Terrain {
   private boolean block;
   private String type;
   private int border;
-  //types are "lake" for now
+  //types are "pond" for now
+  
+  private int counter = 0;
   
   
   //constructor
@@ -30,5 +32,15 @@ class Terrain {
   
   void coordinate_Test() {
     println("pond at " + xPos + ", " + yPos);
+  }
+  
+  void genList() {
+    //generation number goes up one therefore going down the list of coordinates it needs to generate terrain on
+     counter += 1; 
+  }
+  
+  void worldgen_A() {
+    //You need about 10 terrains
+    print("i have no idea how to make a coordinated list");
   }
 }
