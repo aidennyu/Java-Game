@@ -184,7 +184,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     if (levelSelect == 0) {
       fill(255, 255, 0, 255);
       rect(210, 420, 50, 50);
-
     } else if (levelSelect == 1) {
       fill(255, 255, 0, 255);
       rect(330 + 180, 500, 50, 50);
@@ -291,6 +290,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
               fill(0, 255, 0, 100);
             }
           } else {
+
             // Cursor is on an enemy character, so colour red
             fill(255, 0, 0, 100);
           }
@@ -309,26 +309,10 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
           // Cursor is on an enemy character, so colour black
           fill(255, 255, 255, 100);
         } else {
-          if (!character_array[character_index].friend) {
-            if (character_array[character_index].is_dead()) {
-
-              // Character is dead, so colour red
-              fill(255, 0, 0, 100);
-            } else {
-
-              // Character is alive, so colour green
-              fill(0, 255, 0, 100);
-            }
-          } else {
-
-            // Cursor is on an enemy character, so colour red
-            fill(255, 0, 0, 100);
-          }
+          
+          // Cursor is on a friendly character, so colour red
+          fill(255, 0, 0, 100);
         }
-      } else {
-
-        // Character is currently selected, so colour black
-        fill(0, 0, 0, 100);
       }
     } else {
 
@@ -350,23 +334,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     if (selection) {
       text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50);
     }
-
-
-    if (attack_selection) {
-      text("Attack a player...", 50, 50);
-    }
-
-    if (timer > 0) {
-      text("Dealt " + attack_value + " damage!", 500, 50);
-      timer -= 5;
-    }
-
-
-    text("Our Turn: " + our_turn, 50, 100);
-  }
-
-  if (gameState == 3) {
-
 
     if (attack_selection) {
       text("Attack a player...", 50, 50);
@@ -601,7 +568,7 @@ void keyPressed() {
 
     // Keys to select a character
     for (int i = 0; i < character_array.length; i++) {
-      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead && character_array[i].can_move) {
+      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead) {
         if (our_turn) {
           if (character_array[i].friend) {
 
@@ -644,16 +611,6 @@ void keyPressed() {
             attacker = character_array[i];
             break;
           }
-
-        } else {
-          if (our_turn && !character_array[i].friend) {
-            timer = 1000;
-            attack_value = attack(attacker, character_array[i]);
-            attack_selection = false;
-          } else if (!our_turn && character_array[i].friend) {
-            timer = 1000;
-            attack_value = attack(attacker, character_array[i]);
-            attack_selection = false;
         } else if (attack_selection) {
           if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && !(cursor_x == attacker.x_position && cursor_y == attacker.y_position)) {
             if (our_turn && !character_array[i].friend) {
@@ -676,62 +633,23 @@ void keyPressed() {
       selection = false;
 
       // Check if character has moved from initial position
-      if (our_turn) {
-        if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
-          if (attack_selection) {
-            for (int i = 0; i < character_array.length; i++) {
-              if (!character_array[i].can_attack) {
-                character_array[i].can_attack = true;
-              }
-              if (!character_array[i].can_move) {
-                character_array[i].can_move = true;
-              }
-            }
-            attack_selection = false;
-            our_turn = false;
-          } else {
-            our_turn = true;
-            for (int i = 0; i < character_array.length; i++) {
-              if (!character_array[i].can_attack) {
-                character_array[i].can_attack = true;
-              }
+      if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
+        if (our_turn) {
+          our_turn = false;
 
-              if (!character_array[i].can_move) {
-                character_array[i].can_move = true;
-              }
+          for (int i = 0; i < character_array.length; i++) {
+            if (!character_array[i].can_attack) {
+              character_array[i].can_attack = true;
             }
           }
-        }
+        } else {
+          our_turn = true;
 
-        current_selection.can_move = false;
-      } else {
-        if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
-          if (attack_selection) {
-            for (int i = 0; i < character_array.length; i++) {
-              if (!character_array[i].can_attack) {
-                character_array[i].can_attack = true;
-              }
-
-              if (!character_array[i].can_move) {
-                character_array[i].can_move = true;
-              }
-            }
-            attack_selection = false;
-            our_turn = true;
-          } else {
-            our_turn = false;
-            for (int i = 0; i < character_array.length; i++) {
-              if (!character_array[i].can_attack) {
-                character_array[i].can_attack = true;
-              }
-
-              if (!character_array[i].can_move) {
-                character_array[i].can_move = true;
-              }
+          for (int i = 0; i < character_array.length; i++) {
+            if (!character_array[i].can_attack) {
+              character_array[i].can_attack = true;
             }
           }
-
-          current_selection.can_move = false;
         }
       }
     }
