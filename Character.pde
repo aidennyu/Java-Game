@@ -8,6 +8,7 @@ class Character {
   boolean dead;
   boolean friend;
   int moves;
+  boolean alreadyMoved;
   
   // All the things a character should have
   Character(int hp, int x, int y, int a, int d, boolean f, int m) {
@@ -20,6 +21,7 @@ class Character {
     friend = f;
     moves = m;
     dead = false;
+    alreadyMoved = false;
   }
   
   // Function that displays the character
@@ -63,5 +65,13 @@ class Character {
   // Function that changes the character's y position
   void change_y(int change) {
     y_position += change; 
+  }
+  
+  void setMoved(boolean change) {
+    alreadyMoved = change; 
+  }
+  boolean getMoved() {
+    
+    return alreadyMoved;
   }
 }
