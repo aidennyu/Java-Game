@@ -547,13 +547,24 @@ void keyPressed() {
     
   }
   if (key == 'g' || key == 'G') {
-            for (int i = 0; i < character_array.length; i++) {
-          character_array[i].setMoved(false);
-        }
-    selection = false;
-        our_turn = false;  
+            
+    
+    if(our_turn) {
+      for (int i = 0; i < character_array.length; i++) {
+            character_array[i].setMoved(false);
+          }
+      selection = false;
+      our_turn = false;  
+      println("ur bad");
 
-
+    } else if(our_turn == false) {
+      for (int i = 0; i < character_array.length; i++) {
+            character_array[i].setMoved(false);
+          }
+      selection = false;
+      our_turn = true;
+      println("ur bad2");
+    }
       }
     
     
