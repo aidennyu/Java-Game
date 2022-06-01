@@ -164,7 +164,7 @@ int move_max = 2;
     //println(character_y);
     //terrain_array[0].coordinate_Test();
 
-     Check if the x and y coordinates match any other character
+     //Check if the x and y coordinates match any other character
     for (int l = 0; l < initial_positions.length; l++) {
       if (character_x == initial_positions[l][0] && character_y == initial_positions[l][1]) {
         same_coordinates = true;
