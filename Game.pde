@@ -1,4 +1,4 @@
-// Global variables //<>// //<>//
+// Global variables
 
 //audio import setup for way later -
 //import processing.sound.*;
@@ -11,7 +11,7 @@ byte gameState = 0;
 Character[] character_array;
 
 // Initialize (temperary) amount of friendly and enemy characters
-int character_count = 4;
+int character_count = 5;
 int enemy_count = 5;
 
 // 2D array that'll hel keep track of initial starting positions of characters
@@ -33,15 +33,24 @@ int character_x, character_y;
 // Initialize the size of each square in the grid
 int box_size = 50;
 
+// HOW MUCH TERRAIN DO YOU WANT?
+int terrain_ponds = 1;
+
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
 Character current_selection;
+
 Character memSelection;
+
+
+boolean attack_selection = false;
+Character attacker;
+
 //Number of people moved should equal total num of char on ur side before switching turns
 int numCharMoved;
 
 // Our turn first!
-boolean our_turn = false;
+boolean our_turn = true;
 
 //menu stuff
 PImage menu;
@@ -50,10 +59,15 @@ PImage dog;
 PImage settingsOption;
 PImage settingsMenu;
 
+int timer;
+int attack_value;
+
 byte selectorWixoss = 0;
 byte levelSelect = 0;
 
 int mem_character_x, mem_character_y;
+
+
 // Function on start-up
 void setup() {
   //images ini
@@ -62,18 +76,14 @@ void setup() {
   dog = loadImage("dogCharacter.png");
   settingsOption = loadImage("Settings.png");
   settingsMenu = loadImage("SettingsMenu.jpg");
-  
+
   //initialize audio:
   //menuSong = new SoundFile(this, "helghanForever.mp3");
-  
 
-// Move range restrictions
-int move_max = 2;
+  // Move range restrictions
+  int move_max = 2;
 
-
-// Function on start-up
-
-
+  // Function on start-up
 
   // Initialize the size of the game window
   size(1000, 1000);
@@ -88,6 +98,10 @@ int move_max = 2;
 
   // Current selection is currently not selected to anything
   current_selection = null;
+
+  attacker = null;
+
+  timer = 0;
 
   // Variable to check if characters have the same coordinates
   boolean same_coordinates;
@@ -112,9 +126,11 @@ int move_max = 2;
 
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-      character_array[i] = new Character(100, border + character_x, border + character_y, 100, 100, true, move_max);
+      character_array[i] = new Character(100, border + character_x, border + character_y, 10, 10, true, move_max);
     }
   }
+
+  //Randomized terrain (ponds for now)
 
   // Randomized initialization for enemy
   for (int k = character_count; k < enemy_count + character_count; k++) {
@@ -135,7 +151,7 @@ int move_max = 2;
 
     // If not, then make a new Character with those coordinates
     if (!same_coordinates) {
-      character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false, move_max);
+      character_array[k] = new Character(100, border + character_x, border + character_y, 10, 10, false, move_max);
     }
   }
 }
@@ -146,76 +162,100 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   if (gameState == 0) {
     image(menu, 0, 0, 1000, 1000);
     image(settingsOption, 260, 433, 478, 84);
-      
-      noStroke();
-      fill(255, 0, 0, 100);
-      rect(200, 625 + 200 * selectorWixoss, 600, 100);
-      
-   /* this is the basic setup for audio
+
+    noStroke();
+    fill(255, 0, 0, 100);
+    rect(200, 625 + 200 * selectorWixoss, 600, 100);
+
+    /* this is the basic setup for audio
      if (menuSong.isPlaying() == false) {
-      menuSong.amp(0.4);
-      menuSong.play();
-      menuSong.jump(21);
-    }  */
-    
-    
+     menuSong.amp(0.4);
+     menuSong.play();
+     menuSong.jump(21);
+     }  */
   }
-  
+
   if (gameState == 1) {
     image(level, 0, 0, 1776, 1000);
-    
+
     noStroke();
     fill(255, 0, 0, 255);
-    
+
     rect(210, 420, 50, 50);
     rect(330 + 180, 500, 50, 50);
     rect(630 + 180, 500, 50, 50);
-    
+
     if (levelSelect == 0) {
-    fill(255, 255, 0, 255);
-    rect(210, 420, 50, 50);
+      fill(255, 255, 0, 255);
+      rect(210, 420, 50, 50);
+    } else if (levelSelect == 1) {
+      fill(255, 255, 0, 255);
+      rect(330 + 180, 500, 50, 50);
+    } else if (levelSelect == 2) {
+      fill(255, 255, 0, 255);
+      rect(630 + 180, 500, 50, 50);
     }
-    if (levelSelect == 1) {
-    fill(255, 255, 0, 255);
-    rect(330 + 180, 500, 50, 50);
+
+    if (levelSelect == 0) {
+      image(dog, 180, 340, 525/5, 510/5);
+    } else if (levelSelect > 0) {
+      image(dog, 180 + 300 * levelSelect, 420, 525/5, 510/5);
     }
-    if (levelSelect == 2) {
-    fill(255, 255, 0, 255);
-    rect(630 + 180, 500, 50, 50);
-    }
-    
-    if (levelSelect == 0)
-    image(dog, 180, 340, 525/5, 510/5);
-    
-    if (levelSelect > 0)
-    image(dog, 180 + 300 * levelSelect, 420, 525/5, 510/5);
-   //to select a world justmake a new gamestate for that world
-    
-  }
-  
-  if (gameState == 2) {
+    //to select a world justmake a new gamestate for that world
+  } else if (gameState == 2) {
     //menuSong.stop();
-    
     background(255);
     fill(225);
     stroke(0);
-    
-    // Drawing the board / grid
-  for (int i = border; i < columns - border; i++) {
-    for (int j = border; j < rows - border; j++) {
-      fill(225);
 
-      if (selection && j <= mem_character_x + current_selection.moves && 
-          i <= mem_character_y + current_selection.moves && 
+    // Drawing the board / grid
+    for (int i = border; i < columns - border; i++) {
+      for (int j = border; j < rows - border; j++) {
+        fill(225);
+
+        if (selection && j <= mem_character_x + current_selection.moves &&
+          i <= mem_character_y + current_selection.moves &&
           j >= mem_character_x - current_selection.moves &&
-          i >= mem_character_y - current_selection.moves && 
+          i >= mem_character_y - current_selection.moves &&
           !(j == cursor_x && i == cursor_y) &&
           !(j == mem_character_x && i == mem_character_y)) {
-        fill(0, 255, 0);
-      }
+          fill(0, 255, 0);
+        } else if (attack_selection) {
+          for (int m = 0; m < character_array.length; m++) {
+            if (j == character_array[m].x_position &&
+                i == character_array[m].y_position &&
+                j <= mem_character_x + attacker.attack_range &&
+                i <= mem_character_y + attacker.attack_range &&
+                j >= mem_character_x - attacker.attack_range &&
+                i >= mem_character_y - attacker.attack_range ) {
+              if (our_turn && !character_array[m].friend) {
+                fill(0, 255, 0);    
+              } else if (!our_turn && character_array[m].friend) {
+                fill(0, 255, 0);
+              }
+            }
+          }
+        }
 
-      rect(j * box_size, i * box_size, box_size, box_size);
+        rect(j * box_size, i * box_size, box_size, box_size);
+      }
     }
+
+
+    // Drawing the cursor
+
+    boolean on_character = false;
+    int character_index = 0;
+
+    // Check if the cursor is on a character
+    for (var l = 0; l < character_array.length; l++) {
+      if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {
+        on_character = true;
+        character_index = l;
+        break;
+      }
+    }
+
   }
     
      // Drawing the cursor
@@ -231,9 +271,21 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     } 
   }
     //CURSOR COLOUR ====
+
+
+
+    // Deselect if selected character is dead
+    if (selection) {
+      if (current_selection.is_dead()) {
+        selection = false;
+      }
+    }
+
+
     if (on_character) {
-      if (!selection) {
+      if (!selection && !attack_selection) {
         if (our_turn) {
+
           if (character_array[character_index].friend && (character_array[character_index].getMoved() != true )) {
             fill(0, 255, 0, 100);
           } else {
@@ -246,39 +298,92 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
           } else {
             fill(100, 99, 22, 100);
             
+
+          if (character_array[character_index].friend) {
+            if (character_array[character_index].is_dead()) {
+
+              // Character is dead, so colour red
+              fill(255, 0, 0, 100);
+            } else {
+
+              // Character is alive, so colour green
+              fill(0, 255, 0, 100);
+            }
+          } else {
+
+            // Cursor is on an enemy character, so colour red
+            fill(255, 0, 0, 100);
+          }
+        } else {
+          if (!character_array[character_index].friend) {
+            if (character_array[character_index].is_dead()) {
+
+              // Character is dead, so colour red
+              fill(255, 0, 0, 100);
+            } else {
+
+              // Character is alive, so colour green
+              fill(0, 255, 0, 100);
+            }
+          } else {
+
+            // Cursor is on an enemy character, so colour red
+            fill(255, 0, 0, 100);
+
           }
         }
-      } else {
-        fill(0, 0, 0, 100); 
+      } else if (selection) {
+
+        // Character is currently selected, so colour black
+        fill(0, 0, 0, 100);
+      } else if (attack_selection) {
+        if (our_turn && !character_array[character_index].friend) {
+           
+          // Cursor is on an enemy character, so colour black
+          fill(255, 255, 255, 100);
+        } else if (!our_turn && character_array[character_index].friend) {
+          
+          // Cursor is on an enemy character, so colour black
+          fill(255, 255, 255, 100);
+        } else {
+          
+          // Cursor is on a friendly character, so colour red
+          fill(255, 0, 0, 100);
+        }
       }
     } else {
-        if (our_turn) {
-          fill(0, 0, 255, 100);
-        }else {
-          fill(255 ,0 ,0 ,100);
-        }
+
+      // Cursor is not on any character, so colour red
+      fill(255, 0, 0, 100);
     }
-    
+
     rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
-    
-    // Drawing the characters 
+
+    // Drawing the characters
     for (int k = 0; k < character_array.length; k++) {
       character_array[k].display();
     }
-    
+
     fill(0);
     textSize(20);
-    
-    // Drawing other texts
-  if (selection) {
-    text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50);
-  }
 
-  text("Our Turn: " + our_turn, 50, 100);
-  
- }
- 
- if (gameState == 3) {
+    // Drawing other texts
+    if (selection) {
+      text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50);
+    }
+
+    if (attack_selection) {
+      text("Attack a player...", 50, 50);
+      text("Attack range: " + attacker.attack_range, 50, 75);
+    }
+
+    if (timer > 0) {
+      text("Dealt " + attack_value + " damage!", 500, 50);
+      timer -= 5;
+    }
+
+    text("Our Turn: " + our_turn, 50, 100);
+  } else if (gameState == 3) {
     image(settingsMenu, 0, 0, 1000, 1000);
   }
 }
@@ -287,6 +392,14 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 // Function that checks if any two characters overlap
 boolean overlap() {
   boolean same_space = false;
+
+
+  //Check if the characer & terrain are overlapping
+  //for (int t = 0; t < 20; t++) {
+  //  if () {
+  //      same_space = true;
+  //      break;
+  //}
 
   // Check if any two characters are overlaping
   for (int i = 0; i < character_array.length; i++) {
@@ -304,135 +417,144 @@ boolean overlap() {
 
   return same_space;
 }
-  
 
 
 // Attack function
-void attack(Character character_1, Character character_2) {
+int attack(Character character_1, Character character_2) {
+  int attack_value = 0;
+
   if (character_2.health_points > 0) {
-    int range = 4;
-    int luck = int(random(range));
+    int base_damage = 1;
+    float luck = random(2) + 1;
 
-    int attack = character_1.attack;
-    int defence = character_2.defence;
+    attack_value = int((base_damage * (character_1.health_points / 10) * (character_1.attack / character_2.defence)) * luck);
+    character_2.current_health_points -= attack_value;
 
-    int attack_value = int(random(attack / defence) + (1 + luck));
+    if (character_2.current_health_points < 0) {
+      character_2.current_health_points = 0;
+      character_2.is_dead();
+    }
 
-    character_2.health_points -= attack_value;
+    selection = false;
+    character_1.can_attack = false;
+
+    if (our_turn) {
+      our_turn = false;
+    } else {
+      our_turn = true;
+    }
   }
+
+  return attack_value;
 }
 
 
 // Function that calls when a key is pressed
 void keyPressed() {
-      boolean character_moved = true;
-      
-      //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
-        if (key == 'l' && gameState < 2) {
-         if (selectorWixoss == -1) {
-             gameState = 3;
-             selectorWixoss = 0; //resets var to deafult
-         } else {
-           gameState++; 
-           selectorWixoss = 0; //resets var
-         }
-        }
-        if (key == 'k' && gameState > 0 && gameState != 2) {
-          if (gameState == 3) {
-             gameState = 0;
-             selectorWixoss = -1; //resets var to settings slot
-         } else {
-           gameState--; 
-           selectorWixoss = 0; //resets var
-         }
-        }
-      
-      if (gameState == 0) {
-        if (key == CODED) {
-          //MENU SLECTOR DRAW RECT HTIGN
-          if (keyCode == DOWN && selectorWixoss != 0) {
-             selectorWixoss += 1;
-             print(selectorWixoss);
-          }
-          if (keyCode == UP && selectorWixoss != -1) {
-             selectorWixoss -= 1;
-             print(selectorWixoss);
-          }
-          
-          
-        }
+
+  boolean character_moved = true;
+
+  //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh yes
+  if (key == 'l' && gameState < 2) {
+    if (selectorWixoss == -1) {
+      gameState = 3;
+      selectorWixoss = 0; //resets var to deafult
+    } else {
+      gameState++;
+      selectorWixoss = 0; //resets var
+    }
+  }
+
+  if (key == 'k' && gameState > 0 && gameState != 2) {
+    if (gameState == 3) {
+      gameState = 0;
+      selectorWixoss = -1; //resets var to settings slot
+    } else {
+      gameState--;
+      selectorWixoss = 0; //resets var
+    }
+  }
+
+  if (gameState == 0) {
+    if (key == CODED) {
+      //MENU SLECTOR DRAW RECT HTIGN
+      if (keyCode == DOWN && selectorWixoss != 0) {
+        selectorWixoss += 1;
+        print(selectorWixoss);
       }
-      
-      if (gameState == 1) { //LEVEL SELECTORRRRRRRRRRRRRRRRRRRRR
-      
-        if (key == CODED) {
-          //DOG MOVE
-          if (keyCode == LEFT && levelSelect > 0) {
-             levelSelect -= 1;
-             println(levelSelect + "level");
-          }
-          if (keyCode == RIGHT && levelSelect < 2) { //2 is number of levels
-             levelSelect += 1;
-             println(levelSelect + "level");
-          }
-          
-          
-        }
+      if (keyCode == UP && selectorWixoss != -1) {
+        selectorWixoss -= 1;
+        print(selectorWixoss);
       }
-      //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
-      
-      if (gameState == 2) {
-        // Keys to move the character if selected
-      if (selection && key == CODED) {
-        if (keyCode == UP) {
-    
-          // Move character up
-          current_selection.change_y(-1);
-    
-          if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
-    
-            // Move is illegal, so go back
-            current_selection.change_y(1);
-            character_moved = false;
-          }
-        } else if (keyCode == DOWN) {
-    
-          // Move character down
+    }
+  }
+
+  if (gameState == 1) { //LEVEL SELECTORRRRRRRRRRRRRRRRRRRRR
+
+    if (key == CODED) {
+      //DOG MOVE
+      if (keyCode == LEFT && levelSelect > 0) {
+        levelSelect -= 1;
+        println(levelSelect + "level");
+      }
+      if (keyCode == RIGHT && levelSelect < 2) { //2 is number of levels
+        levelSelect += 1;
+        println(levelSelect + "level");
+      }
+    }
+  }
+  //======================================================+++++++++++++++++++++++++++++++++++++++++++++++GAAAAAAAAAAAAAAAAAAAAAAAAAAAAMMMMMMMMMMMMMMMMEEEEEEEEEEEEE GAME CODE
+
+  if (gameState == 2) {
+    // Keys to move the character if selected
+    if (selection && key == CODED) {
+      if (keyCode == UP) {
+
+        // Move character up
+        current_selection.change_y(-1);
+
+        if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
+
+          // Move is illegal, so go back
           current_selection.change_y(1);
-    
-          if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
-    
-            // Move is illegal, so go back
-            current_selection.change_y(-1);
-            character_moved = false;
-          }
-        } else if (keyCode == RIGHT) {
-    
-          // Move character right
-          current_selection.change_x(1);
-    
-          if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
-    
-            // Move is illegal, so go back
-            current_selection.change_x(-1);
-            character_moved = false;
-          }
-        } else if (keyCode == LEFT) {
-    
-          // Move character left
-          current_selection.change_x(-1);
-    
-          if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
-    
-            // Move is illegal, so go back
-            current_selection.change_x(1);
-            character_moved = false;
+          character_moved = false;
+        }
+      } else if (keyCode == DOWN) {
 
-          } 
+        // Move character down
+        current_selection.change_y(1);
+
+        if (overlap() || current_selection.y_position > rows - (border + 1) || current_selection.y_position > mem_character_y + current_selection.moves) {
+
+          // Move is illegal, so go back
+          current_selection.change_y(-1);
+          character_moved = false;
+        }
+      } else if (keyCode == RIGHT) {
+
+        // Move character right
+        current_selection.change_x(1);
+
+        if (overlap() || current_selection.x_position > columns - (border + 1) || current_selection.x_position > mem_character_x + current_selection.moves) {
+
+          // Move is illegal, so go back
+          current_selection.change_x(-1);
+          character_moved = false;
+        }
+      } else if (keyCode == LEFT) {
+
+        // Move character left
+        current_selection.change_x(-1);
+
+        if (overlap() || current_selection.x_position < border || current_selection.x_position < mem_character_x - current_selection.moves) {
+
+          // Move is illegal, so go back
+          current_selection.change_x(1);
+          character_moved = false;
         }
       }
-      
-
+    }
+  }
 
   // Keys to move the cursor
   if (key == CODED) {
@@ -478,47 +600,83 @@ void keyPressed() {
       }
     }
   }
-      }
 
-  // Keys to select a character
-  for (int i = 0; i < character_array.length; i++) {
-    
-        if ((cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !selection && !character_array[i].dead) && (character_array[i].getMoved() != true)  ) {
-          if (our_turn) {
-            if (character_array[i].friend) {
-    
-              // Remember initial coordinates
-              mem_character_x = cursor_x;
-              mem_character_y = cursor_y;
-              character_array[i].setMoved(true); 
-    
-              current_selection = character_array[i];
-              selection = true;
-              break;
-            }
-          } else {
-            if (!character_array[i].friend) {
-    
-              // Remember initial coordinates
-              mem_character_x = cursor_x;
-              mem_character_y = cursor_y;
-              character_array[i].setMoved(true); 
-              current_selection = character_array[i];
-              selection = true;
-              break;
-            }
+  if (!selection) {
+
+    // Keys to select a character
+    for (int i = 0; i < character_array.length; i++) {
+      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead) && (character_array[i].getMoved() != true) {
+        if (our_turn) {
+          if (character_array[i].friend) {
+
+            // Remember initial coordinates
+            mem_character_x = cursor_x;
+            mem_character_y = cursor_y;
+            character_array[i].setMoved(true);
+            current_selection = character_array[i];
+            selection = true;
+            break;
+          }
+        } else {
+          if (!character_array[i].friend) {
+
+            // Remember initial coordinates
+            mem_character_x = cursor_x;
+            mem_character_y = cursor_y;
+            character_array[i].setMoved(true);
+            current_selection = character_array[i];
+            selection = true;
+            break;
+          }
+        }
+
+        // Keys to attack select and attack a character
+      } else if ((key == 'A' || key == 'a') && !character_array[i].dead) {
+        if (!attack_selection && cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position) {
+          if (our_turn && character_array[i].friend) {
+            mem_character_x = cursor_x;
+            mem_character_y = cursor_y;
+
+            attack_selection = true;
+            attacker = character_array[i];
+            break;
+          } else if (!our_turn && !character_array[i].friend) {
+            mem_character_x = cursor_x;
+            mem_character_y = cursor_y;
+
+            attack_selection = true;
+            attacker = character_array[i];
+            break;
+          }
+        } else if (attack_selection) {
+          if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && !(cursor_x == attacker.x_position && cursor_y == attacker.y_position)) {
+            if (our_turn && !character_array[i].friend) {
+              timer = 1000;
+              attack_value = attack(attacker, character_array[i]);
+              attack_selection = false;
+            } else if (!our_turn && character_array[i].friend) {
+              timer = 1000;
+              attack_value = attack(attacker, character_array[i]);
+              attack_selection = false;
+            } 
+          } else if (cursor_y == attacker.y_position && cursor_x == attacker.x_position) {
+            attack_selection = false; 
           }
         }
       }
-  
-  
+    }
+  } else {
+    if (key == 'Q' || key == 'q') {
+      selection = false;
 
-  // Keys to deselect a character
-  if ((key == 'R' || key == 'r') && selection) {
-    selection = false;
+
+      // Check if character has moved from initial position
+      if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
+        if (our_turn) {
+          our_turn = false;
 
     // Check if character has moved from initial position
-    //MAKE BASED ON MEMSELECTION SO YOU CAN SET CURRENT SELLECTION TO NULL!// 
+  
     if (current_selection.getMoved()) {
       
       numCharMoved ++;
@@ -541,10 +699,24 @@ void keyPressed() {
         numCharMoved = 0;
         
 
+
+          for (int i = 0; i < character_array.length; i++) {
+            if (!character_array[i].can_attack) {
+              character_array[i].can_attack = true;
+            }
+          }
+        } else {
+          our_turn = true;
+
+          for (int i = 0; i < character_array.length; i++) {
+            if (!character_array[i].can_attack) {
+              character_array[i].can_attack = true;
+            }
+          }
+        }
+
       }
-    
     }
-    
   }
   if (key == 'g' || key == 'G') {
             
@@ -566,12 +738,5 @@ void keyPressed() {
       println("ur bad2");
     }
       }
-    
-    
-    
-  
-  
-
-
 
 }
