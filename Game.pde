@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Global variables
+=======
+`// Global variables //<>// //<>// //<>//
+>>>>>>> parent of 1e76c0c (randomizer does not work at all)
 =======
 `// Global variables //<>// //<>// //<>//
 >>>>>>> parent of 1e76c0c (randomizer does not work at all)
