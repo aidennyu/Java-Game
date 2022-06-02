@@ -5,9 +5,9 @@ class Character {
   int health_points, current_health_points;
   int x_position, y_position;
   int attack, defence;
-  boolean dead;
-  boolean friend;
-  int moves;
+
+  boolean dead, friend, can_attack, can_move;
+  int moves, attack_range;
   
   // All the things a character should have
   Character(int hp, int x, int y, int a, int d, boolean f, int m) {
@@ -19,6 +19,9 @@ class Character {
     defence = d;
     friend = f;
     moves = m;
+    attack_range = 2 * round(random(0, 1)) + 1;
+    can_attack = true;
+    can_move = true;
     dead = false;
   }
   
@@ -50,6 +53,7 @@ class Character {
     
     if (current_health_points <= 0) {
       dead = true;
+      current_health_points = 0;
     }
     
     return dead;
