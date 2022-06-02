@@ -7,6 +7,7 @@
 //gamemenu
 byte gameState = 0;
 
+
 // Array of characters
 Character[] character_array;
 
@@ -62,8 +63,6 @@ byte selectorWixoss = 0;
 byte levelSelect = 0;
 
 int mem_character_x, mem_character_y;
-
-
 // Function on start-up
 void setup() {
   //images ini
@@ -76,8 +75,10 @@ void setup() {
   //initialize audio:
   //menuSong = new SoundFile(this, "helghanForever.mp3");
 
+
   // Move range restrictions
   int move_max = 2;
+
 
   // Function on start-up
 
@@ -154,6 +155,7 @@ void setup() {
 
 
 // Function that refreshes every frame
+
 void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   if (gameState == 0) {
     image(menu, 0, 0, 1000, 1000);
@@ -184,23 +186,27 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     if (levelSelect == 0) {
       fill(255, 255, 0, 255);
       rect(210, 420, 50, 50);
-
-    } else if (levelSelect == 1) {
+    }
+    if (levelSelect == 1) {
       fill(255, 255, 0, 255);
       rect(330 + 180, 500, 50, 50);
-    } else if (levelSelect == 2) {
+    }
+    if (levelSelect == 2) {
       fill(255, 255, 0, 255);
       rect(630 + 180, 500, 50, 50);
     }
 
-    if (levelSelect == 0) {
+    if (levelSelect == 0)
       image(dog, 180, 340, 525/5, 510/5);
-    } else if (levelSelect > 0) {
+
+    if (levelSelect > 0)
       image(dog, 180 + 300 * levelSelect, 420, 525/5, 510/5);
-    }
     //to select a world justmake a new gamestate for that world
-  } else if (gameState == 2) {
+  }
+
+  if (gameState == 2) {
     //menuSong.stop();
+
     background(255);
     fill(225);
     stroke(0);
@@ -217,21 +223,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
           !(j == cursor_x && i == cursor_y) &&
           !(j == mem_character_x && i == mem_character_y)) {
           fill(0, 255, 0);
-        } else if (attack_selection) {
-          for (int m = 0; m < character_array.length; m++) {
-            if (j == character_array[m].x_position &&
-                i == character_array[m].y_position &&
-                j <= mem_character_x + attacker.attack_range &&
-                i <= mem_character_y + attacker.attack_range &&
-                j >= mem_character_x - attacker.attack_range &&
-                i >= mem_character_y - attacker.attack_range ) {
-              if (our_turn && !character_array[m].friend) {
-                fill(0, 255, 0);    
-              } else if (!our_turn && character_array[m].friend) {
-                fill(0, 255, 0);
-              }
-            }
-          }
         }
 
         rect(j * box_size, i * box_size, box_size, box_size);
@@ -262,7 +253,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     }
 
     if (on_character) {
-      if (!selection && !attack_selection) {
+      if (!selection) {
         if (our_turn) {
           if (character_array[character_index].friend) {
             if (character_array[character_index].is_dead()) {
@@ -279,35 +270,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
             // Cursor is on an enemy character, so colour red
             fill(255, 0, 0, 100);
           }
-        } else {
-          if (!character_array[character_index].friend) {
-            if (character_array[character_index].is_dead()) {
-
-              // Character is dead, so colour red
-              fill(255, 0, 0, 100);
-            } else {
-
-              // Character is alive, so colour green
-              fill(0, 255, 0, 100);
-            }
-          } else {
-            // Cursor is on an enemy character, so colour red
-            fill(255, 0, 0, 100);
-          }
-        }
-      } else if (selection) {
-
-        // Character is currently selected, so colour black
-        fill(0, 0, 0, 100);
-      } else if (attack_selection) {
-        if (our_turn && !character_array[character_index].friend) {
-           
-          // Cursor is on an enemy character, so colour black
-          fill(255, 255, 255, 100);
-        } else if (!our_turn && character_array[character_index].friend) {
-          
-          // Cursor is on an enemy character, so colour black
-          fill(255, 255, 255, 100);
         } else {
           if (!character_array[character_index].friend) {
             if (character_array[character_index].is_dead()) {
@@ -351,7 +313,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       text(current_selection.current_health_points + " / " + current_selection.health_points, 50, 50);
     }
 
-
     if (attack_selection) {
       text("Attack a player...", 50, 50);
     }
@@ -366,20 +327,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   }
 
   if (gameState == 3) {
-
-
-    if (attack_selection) {
-      text("Attack a player...", 50, 50);
-      text("Attack range: " + attacker.attack_range, 50, 75);
-    }
-
-    if (timer > 0) {
-      text("Dealt " + attack_value + " damage!", 500, 50);
-      timer -= 5;
-    }
-
-    text("Our Turn: " + our_turn, 50, 100);
-  } else if (gameState == 3) {
     image(settingsMenu, 0, 0, 1000, 1000);
   }
 }
@@ -397,6 +344,7 @@ boolean overlap() {
   //      break;
   //}
 
+
   // Check if any two characters are overlaping
   for (int i = 0; i < character_array.length; i++) {
     for (int j = 0; j < character_array.length; j++) {
@@ -413,6 +361,7 @@ boolean overlap() {
 
   return same_space;
 }
+
 
 
 // Attack function
@@ -627,8 +576,8 @@ void keyPressed() {
         }
 
         // Keys to attack select and attack a character
-      } else if ((key == 'A' || key == 'a') && !character_array[i].dead) {
-        if (!attack_selection && cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position) {
+      } else if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'A' || key == 'a') && !character_array[i].dead) {
+        if (!attack_selection) {
           if (our_turn && character_array[i].friend) {
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
@@ -644,7 +593,6 @@ void keyPressed() {
             attacker = character_array[i];
             break;
           }
-
         } else {
           if (our_turn && !character_array[i].friend) {
             timer = 1000;
@@ -654,19 +602,6 @@ void keyPressed() {
             timer = 1000;
             attack_value = attack(attacker, character_array[i]);
             attack_selection = false;
-        } else if (attack_selection) {
-          if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && !(cursor_x == attacker.x_position && cursor_y == attacker.y_position)) {
-            if (our_turn && !character_array[i].friend) {
-              timer = 1000;
-              attack_value = attack(attacker, character_array[i]);
-              attack_selection = false;
-            } else if (!our_turn && character_array[i].friend) {
-              timer = 1000;
-              attack_value = attack(attacker, character_array[i]);
-              attack_selection = false;
-            } 
-          } else if (cursor_y == attacker.y_position && cursor_x == attacker.x_position) {
-            attack_selection = false; 
           }
         }
       }
@@ -734,6 +669,7 @@ void keyPressed() {
           current_selection.can_move = false;
         }
       }
+      current_selection.can_move = true;
     }
   }
 }
