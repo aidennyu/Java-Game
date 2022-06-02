@@ -1,4 +1,4 @@
-// Global variables //<>// //<>// //<>//
+`// Global variables //<>// //<>// //<>//
 
 //audio import setup for way later -
 //import processing.sound.*;
@@ -10,11 +10,14 @@ byte gameState = 0;
 // Array of characters
 Character[] character_array;
 
+//Array of TERRAIN
+Terrain[] terrain_array;
+
 // Initialize (temperary) amount of friendly and enemy characters
 int character_count = 5;
 int enemy_count = 5;
 
-// 2D array that'll hel keep track of initial starting positions of characters
+// 2D array that'll help keep track of initial starting positions of characters
 int[][] initial_positions;
 
 // How far from the edge of the screen is the border?
@@ -33,12 +36,8 @@ int character_x, character_y;
 // Initialize the size of each square in the grid
 int box_size = 50;
 
-//Terrain Initializers
-int terrain_pond = 1;
-int terrain_posX = 0;
-int terrain_posY = 0;
-int terrain_test = 0;
-int terrain_total = terrain_pond + terrain_test;
+//Initialize terrain amount
+int terrain_count = 6;
 
 // Set initial selection to be false (you can't be selecting anything when you start the game
 boolean selection = false;
@@ -90,14 +89,31 @@ int move_max = 2;
   // Initialize the character array and initial positions 2D array
   character_array = new Character[character_count + enemy_count];
   initial_positions = new int[character_count + enemy_count][2];
+  
+
+  // Initialize TERRAIN array
+  terrain_array = new Terrain[terrain_count];
+
 
   // Current selection is currently not selected to anything
   current_selection = null;
 
   // Variable to check if characters have the same coordinates
   boolean same_coordinates;
+  
+  //terrain generation
+  //for (int t = 0; t < terrain_count; t++) {}
+    terrain_array[0] = new Terrain(4, 4, true, "pond", 3);
+    terrain_array[1] = new Terrain(4, 5, true, "pond", 3);
+    terrain_array[2] = new Terrain(4, 6, true, "pond", 3);
+    terrain_array[3] = new Terrain(4, 7, true, "pond", 3);
+    terrain_array[4] = new Terrain(5, 4, true, "pond", 3);
+    terrain_array[5] = new Terrain(5, 5, true, "pond", 3);
+  
+  
 
   // Randomized initialization for team
+  //ALRIGHT I HAVE NO IDEA IF THIS WORKS 
   for (int i = 0; i < character_count; i++) {
 
     same_coordinates = false;
@@ -106,10 +122,24 @@ int move_max = 2;
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
 
+
+     // Check if the x and y coordinates match placed terrain (idk if this works)
+    for (int t = 0; t < initial_positions.length; t++) {
+      for (int j = 0; j < terrain_array.length; j++) {
+        if (terrain_array[j].xPos == initial_positions[t][0] && terrain_array[j].yPos == initial_positions[t][1]) {
+          same_coordinates = true;
+          print("terrain same");
+          i--;
+          break;
+        }
+      }
+    }
+
     // Check if the x and y coordinates match any other character
     for (int j = 0; j < initial_positions.length; j++) {
       if (character_x == initial_positions[j][0] && character_y == initial_positions[j][1]) {
         same_coordinates = true;
+        print("character same");
         i--;
         break;
       }
@@ -129,8 +159,12 @@ int move_max = 2;
     // Randomize the x and y coordinates of the character
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
+    //test for terrain coordinates
+    //print(character_x + ", ");
+    //println(character_y);
+    //terrain_array[0].coordinate_Test();
 
-    // Check if the x and y coordinates match any other character
+     //Check if the x and y coordinates match any other character
     for (int l = 0; l < initial_positions.length; l++) {
       if (character_x == initial_positions[l][0] && character_y == initial_positions[l][1]) {
         same_coordinates = true;
@@ -224,18 +258,14 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     }
   }
     
-  //POND DISPLAY
-  //position pond is where the pond is. Right now it is 1 for test. We can then change the variable to change in a list to build a level.
-  int position_pond = 1;
-  fill(204,255,229);
-  //border * box_size makes it so the pond is now on the grid.
-  
-  rect((border * box_size) * position_pond, (border * box_size) * position_pond, box_size, box_size);
-  
-  
      // Drawing the cursor
   boolean on_character = false;
   int character_index = 0;
+
+  // Drawing the terrain
+    for (int t = 0; t < terrain_array.length; t++) {
+      terrain_array[t].display();
+    }
 
   // Check if the cursor is on a character
   for (var l = 0; l < character_array.length; l++) {
@@ -246,33 +276,31 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     }
   }
     //CURSOR COLOUR ====
-    
-      if (on_character) {
-        if (!selection) {
-          if (our_turn) {
-            if (character_array[character_index].friend) {
-              fill(0, 255, 0, 100);
-            } else {
-              fill(100, 99, 22, 100);
-            }
+    if (on_character) {
+      if (!selection) {
+        if (our_turn) {
+          if (character_array[character_index].friend) {
+            fill(0, 255, 0, 255);
           } else {
-            if (!character_array[character_index].friend) {
-              fill(0, 255, 0, 100);
-            } else {
-              fill(100, 99, 22, 100);
-            }
+            fill(100, 99, 22, 255);
           }
         } else {
-          fill(0, 0, 0, 100); 
+          if (!character_array[character_index].friend) {
+            fill(50, 255, 50, 255);
+          } else {
+            fill(120, 120, 120, 255);
+          }
         }
       } else {
-          if (our_turn) {
-            fill(0, 0, 255, 100);
-          }else {
-            fill(255 ,0 ,0 ,100);
-          }
+        fill(70, 70, 70, 255); 
       }
-    
+    } else {
+        if (our_turn) {
+          fill(0, 0, 255, 255);
+        }else {
+          fill(255 ,153 ,153 ,255);
+        }
+    }
     rect(cursor_x * box_size, cursor_y * box_size, box_size, box_size);
     
     // Drawing the characters 
@@ -289,9 +317,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   }
 
   text("Our Turn: " + our_turn, 50, 100);
-  
-  
-  
  }
  
  if (gameState == 3) {
@@ -304,12 +329,22 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 boolean overlap() {
   boolean same_space = false;
 
-  //Check if the characer & terrain are overlapping
-  //for (int t = 0; t < 20; t++) {
-  //  if () {
-  //      same_space = true;
-  //      break;
-  //}
+  //the overlap works by scanning the each charatcer's position with every other character in the array. If both coords are the same OVERLAP TRUE
+  // the (i != j) means if the character is not itself, check for the x and y conditions.
+
+  //Check if terrain and character are overlapping
+  for (int i = 0; i < character_array.length; i++) {
+    for (int j = 0; j < terrain_array.length; j++) {
+      if (character_array[i].x_position == terrain_array[j].xPos && character_array[i].y_position == terrain_array[j].yPos && terrain_array[j].block == true) {
+        same_space = true;
+        break;
+      }
+    }
+    
+    if (same_space) {
+      break;
+    }
+  }
 
   // Check if any two characters are overlaping
   for (int i = 0; i < character_array.length; i++) {
@@ -411,7 +446,9 @@ void keyPressed() {
     
           // Move character up
           current_selection.change_y(-1);
-    
+          //0,0 on the board is actually 4, 4 for some reason
+    println(current_selection.x_position + ", " + current_selection.y_position);
+  
           if (overlap() || current_selection.y_position < border || current_selection.y_position < mem_character_y - current_selection.moves) {
     
             // Move is illegal, so go back
