@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Global variables
+=======
+`// Global variables //<>// //<>// //<>//
+>>>>>>> parent of 1e76c0c (randomizer does not work at all)
 
 //audio import setup for way later -
 //import processing.sound.*;
@@ -130,18 +134,27 @@ void setup() {
     // Randomize the x and y coordinates of the character
     character_x = int(random(columns - 2 * border));
     character_y = int(random(columns - 2 * border));
-    println(terrain_array[1].xPos + "," + terrain_array[1].yPos);
-    println(character_x + "," + character_y);
 
-    // Check if the x and y coordinates match any other character and terrain
-    for (int j = 0; j < initial_positions.length; j++) {
-      for (int t = 0; t < terrain_array.length; t++) {
-        if ((character_x == initial_positions[j][0] && character_y == initial_positions[j][1]) || (terrain_array[t].xPos == character_x && terrain_array[t].yPos == character_y)) {
+
+     // Check if the x and y coordinates match placed terrain (idk if this works)
+    for (int t = 0; t < initial_positions.length; t++) {
+      for (int j = 0; j < terrain_array.length; j++) {
+        if (terrain_array[j].xPos == initial_positions[t][0] && terrain_array[j].yPos == initial_positions[t][1]) {
           same_coordinates = true;
-          println("character same or terrain same");
+          print("terrain same");
           i--;
           break;
         }
+      }
+    }
+
+    // Check if the x and y coordinates match any other character
+    for (int j = 0; j < initial_positions.length; j++) {
+      if (character_x == initial_positions[j][0] && character_y == initial_positions[j][1]) {
+        same_coordinates = true;
+        print("character same");
+        i--;
+        break;
       }
     }
 
@@ -163,15 +176,12 @@ void setup() {
     //println(character_y);
     //terrain_array[0].coordinate_Test();
 
-    // Check if the x and y coordinates match any other character and terrain
-    for (int j = 0; j < initial_positions.length; j++) {
-      for (int t = 0; t < terrain_array.length; t++) {
-        if ((character_x == initial_positions[j][0] && character_y == initial_positions[j][1]) || (terrain_array[t].xPos == character_x && terrain_array[t].yPos == character_y)) {
-          same_coordinates = true;
-          print("character same or terrain same");
-          k--;
-          break;
-        }
+     //Check if the x and y coordinates match any other character
+    for (int l = 0; l < initial_positions.length; l++) {
+      if (character_x == initial_positions[l][0] && character_y == initial_positions[l][1]) {
+        same_coordinates = true;
+        k--;
+        break;
       }
     }
 
