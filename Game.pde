@@ -40,12 +40,8 @@ int terrain_ponds = 1;
 boolean selection = false;
 Character current_selection;
 
-Character memSelection;
-
-
 boolean attack_selection = false;
 Character attacker;
-
 //Number of people moved should equal total num of char on ur side before switching turns
 int numCharMoved;
 
@@ -256,23 +252,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       }
     }
 
-  }
-    
-     // Drawing the cursor
-  boolean on_character = false;
-  int character_index = 0;
-
-  // Check if the cursor is on a character
-  for (var l = 0; l < character_array.length; l++) {
-    if (cursor_y == character_array[l].y_position && cursor_x == character_array[l].x_position) {
-      on_character = true;
-      character_index = l;
-      break;
-    } 
-  }
-    //CURSOR COLOUR ====
-
-
 
     // Deselect if selected character is dead
     if (selection) {
@@ -281,24 +260,9 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       }
     }
 
-
     if (on_character) {
       if (!selection && !attack_selection) {
         if (our_turn) {
-
-          if (character_array[character_index].friend && (character_array[character_index].getMoved() != true )) {
-            fill(0, 255, 0, 100);
-          } else {
-            fill(100, 99, 22, 100);
-            
-          }
-        } else {
-          if (!character_array[character_index].friend && (character_array[character_index].getMoved() != true )) {
-            fill(0, 255, 0, 100);
-          } else {
-            fill(100, 99, 22, 100);
-            
-
           if (character_array[character_index].friend) {
             if (character_array[character_index].is_dead()) {
 
@@ -329,7 +293,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
             // Cursor is on an enemy character, so colour red
             fill(255, 0, 0, 100);
-
           }
         }
       } else if (selection) {
@@ -605,14 +568,14 @@ void keyPressed() {
 
     // Keys to select a character
     for (int i = 0; i < character_array.length; i++) {
-      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead) && (character_array[i].getMoved() != true) {
+      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead) {
         if (our_turn) {
           if (character_array[i].friend) {
 
             // Remember initial coordinates
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
-            character_array[i].setMoved(true);
+
             current_selection = character_array[i];
             selection = true;
             break;
@@ -623,7 +586,7 @@ void keyPressed() {
             // Remember initial coordinates
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
-            character_array[i].setMoved(true);
+
             current_selection = character_array[i];
             selection = true;
             break;
@@ -669,36 +632,10 @@ void keyPressed() {
     if (key == 'Q' || key == 'q') {
       selection = false;
 
-
       // Check if character has moved from initial position
       if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
         if (our_turn) {
           our_turn = false;
-
-    // Check if character has moved from initial position
-  
-    if (current_selection.getMoved()) {
-      
-      numCharMoved ++;
-      if (our_turn && numCharMoved == character_count) {
-          for (int i = 0; i < character_array.length; i++) {
-            character_array[i].setMoved(false);
-        }
-        our_turn = false;
-        numCharMoved=0;
-        
-
-        
-      }
-      if (!our_turn && numCharMoved == enemy_count) {
-          for (int i = 0; i < character_array.length; i++) {
-            character_array[i].setMoved(false);
-        }
-        
-        our_turn = true;
-        numCharMoved = 0;
-        
-
 
           for (int i = 0; i < character_array.length; i++) {
             if (!character_array[i].can_attack) {
@@ -714,29 +651,7 @@ void keyPressed() {
             }
           }
         }
-
       }
     }
   }
-  if (key == 'g' || key == 'G') {
-            
-    
-    if(our_turn) {
-      for (int i = 0; i < character_array.length; i++) {
-            character_array[i].setMoved(false);
-          }
-      selection = false;
-      our_turn = false;  
-      println("ur bad");
-
-    } else if(our_turn == false) {
-      for (int i = 0; i < character_array.length; i++) {
-            character_array[i].setMoved(false);
-          }
-      selection = false;
-      our_turn = true;
-      println("ur bad2");
-    }
-      }
-
 }
