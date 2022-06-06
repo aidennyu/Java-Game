@@ -402,11 +402,7 @@ int attack(Character character_1, Character character_2) {
     selection = false;
     character_1.can_attack = false;
 
-    if (our_turn) {
-      our_turn = false;
-    } else {
-      our_turn = true;
-    }
+
   }
 
   return attack_value;
@@ -569,14 +565,15 @@ void keyPressed() {
 
     // Keys to select a character
     for (int i = 0; i < character_array.length; i++) {
-      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead) {
+      if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && (key == 'Q' || key == 'q') && !character_array[i].dead && (character_array[i].getMoved() != true)) {
         if (our_turn) {
           if (character_array[i].friend) {
 
             // Remember initial coordinates
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
-
+            character_array[i].setMoved(true); 
+            character_array[i].can_attack = false;
             current_selection = character_array[i];
             selection = true;
             break;
@@ -587,7 +584,8 @@ void keyPressed() {
             // Remember initial coordinates
             mem_character_x = cursor_x;
             mem_character_y = cursor_y;
-
+            character_array[i].setMoved(true); 
+            character_array[i].can_attack = false;
             current_selection = character_array[i];
             selection = true;
             break;
@@ -634,11 +632,20 @@ void keyPressed() {
   } else {
     if (key == 'Q' || key == 'q') {
       selection = false;
+     numCharMoved ++;
+
+
+
+
 
       // Check if character has moved from initial position
       if (our_turn) {
-        if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
+        if (current_selection.getMoved()) {
+
           if (attack_selection) {
+            
+            
+            
             for (int i = 0; i < character_array.length; i++) {
               if (!character_array[i].can_attack) {
                 character_array[i].can_attack = true;
@@ -647,10 +654,22 @@ void keyPressed() {
                 character_array[i].can_move = true;
               }
             }
+            if (our_turn && numCharMoved == character_count) {
+                    for (int i = 0; i < character_array.length; i++) {
+                      character_array[i].setMoved(false);
+                  }
+                  our_turn = false;
+                  numCharMoved=0;
+                   
+                }           
+            
             attack_selection = false;
-            our_turn = false;
+            
+ 
+            
           } else {
-            our_turn = true;
+            
+            
             for (int i = 0; i < character_array.length; i++) {
               if (!character_array[i].can_attack) {
                 character_array[i].can_attack = true;
@@ -660,13 +679,37 @@ void keyPressed() {
                 character_array[i].can_move = true;
               }
             }
+           if (our_turn && numCharMoved == character_count) {
+                    for (int i = 0; i < character_array.length; i++) {
+                      character_array[i].setMoved(false);
+                  }
+                  our_turn = false;
+                  numCharMoved=0;
+                   
+                }
+              
+              
+             
+            
           }
+          
         }
-
+        
         current_selection.can_move = false;
       } else {
-        if (current_selection.x_position != mem_character_x || current_selection.y_position != mem_character_y) {
+        if (current_selection.getMoved()) {
           if (attack_selection) {
+            if (!our_turn && numCharMoved == enemy_count) {
+                for (int i = 0; i < character_array.length; i++) {
+                  character_array[i].setMoved(false);
+              }
+              
+              our_turn = true;
+              numCharMoved = 0;
+              
+      
+            }             
+            
             for (int i = 0; i < character_array.length; i++) {
               if (!character_array[i].can_attack) {
                 character_array[i].can_attack = true;
@@ -676,10 +719,22 @@ void keyPressed() {
                 character_array[i].can_move = true;
               }
             }
+           
+            
+            
             attack_selection = false;
-            our_turn = true;
+
           } else {
-            our_turn = false;
+            if (!our_turn && numCharMoved == enemy_count) {
+                for (int i = 0; i < character_array.length; i++) {
+                  character_array[i].setMoved(false);
+              }
+              
+              our_turn = true;
+              numCharMoved = 0;
+              
+      
+            }            
             for (int i = 0; i < character_array.length; i++) {
               if (!character_array[i].can_attack) {
                 character_array[i].can_attack = true;
@@ -689,9 +744,11 @@ void keyPressed() {
                 character_array[i].can_move = true;
               }
             }
+            
           }
 
           current_selection.can_move = false;
+
         }
       }
       current_selection.can_move = true;
