@@ -2,7 +2,7 @@
 
 //audio import setup for way later -
 //import processing.sound.*;
-//SoundFile menuSong;
+//SoundFile menuSong
 
 //gamemenu
 byte gameState = 0;
