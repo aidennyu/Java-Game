@@ -186,7 +186,10 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     if (levelSelect == 0) {
       fill(255, 255, 0, 255);
       rect(210, 420, 50, 50);
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     } else if (levelSelect == 1) {
 
       fill(255, 255, 0, 255);
@@ -295,6 +298,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
         fill(0, 0, 0, 100);
       } else if (attack_selection) {
         if (our_turn && !character_array[character_index].friend) {
+<<<<<<< Updated upstream
            
           // Cursor is on an enemy character, so colour black
           fill(255, 255, 255, 100);
@@ -307,6 +311,19 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
           // Cursor is on a friendly character, so colour red
           fill(255, 0, 0, 100);
 
+=======
+
+          // Cursor is on an enemy character, so colour black
+          fill(255, 255, 255, 100);
+        } else if (!our_turn && character_array[character_index].friend) {
+
+          // Cursor is on an enemy character, so colour black
+          fill(255, 255, 255, 100);
+        } else {
+
+          // Cursor is on a friendly character, so colour red
+          fill(255, 0, 0, 100);
+>>>>>>> Stashed changes
         }
       }
     } else {
@@ -334,7 +351,10 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       text("Attack a player...", 50, 50);
 
       text("Attack range: " + attacker.attack_range, 50, 75);
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     }
 
     if (timer > 0) {
@@ -612,7 +632,10 @@ void keyPressed() {
             attacker = character_array[i];
             break;
           }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         } else if (attack_selection) {
           if (cursor_y == character_array[i].y_position && cursor_x == character_array[i].x_position && !(cursor_x == attacker.x_position && cursor_y == attacker.y_position)) {
             if (our_turn && !character_array[i].friend) {
@@ -623,10 +646,16 @@ void keyPressed() {
               timer = 1000;
               attack_value = attack(attacker, character_array[i]);
               attack_selection = false;
+<<<<<<< Updated upstream
             } 
           } else if (cursor_y == attacker.y_position && cursor_x == attacker.x_position) {
             attack_selection = false; 
 
+=======
+            }
+          } else if (cursor_y == attacker.y_position && cursor_x == attacker.x_position) {
+            attack_selection = false;
+>>>>>>> Stashed changes
           }
         }
       }
