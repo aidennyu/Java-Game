@@ -1,4 +1,4 @@
-`// Global variables //<>// //<>// //<>//
+// Global variables //<>//
 
 //audio import setup for way later -
 //import processing.sound.*;
