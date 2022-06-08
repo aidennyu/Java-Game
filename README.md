@@ -1,8 +1,20 @@
-# v1.4 - Current Version
+# v1.6 - Current Version
+
+- Updated attack function
+- Added a button ("a") to attack (as a start, the current selection)
+- Automatic end of turn after attack
+
+# v1.5
+
+- Implemented an updated move function
+	- Move restrictions
+	- Move canceling
+
+# v1.4
 
 - Implemented an automatic turn-based system
 	- After every move, it switches turns
-- Implemented Aiden's attack function to my code
+- Implemented attack function
 
 # v1.3
 
