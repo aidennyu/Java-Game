@@ -49,13 +49,6 @@ int numCharMoved;
 // Our turn first!
 boolean our_turn = true;
 
-// Creates array for menu menu objects
- MenuList listMenu = new MenuList();
- TextMenu menu = new TextMenu("bruh","message",100,100,200,500,225);
- //TextMenu menu = MenuObjects.createMenu("textmenu", "Hello World");
- Box newBox = new Box(0,0,100,100,225);
-
-
 //menu stuff
 PImage menu;
 PImage level;
@@ -72,11 +65,6 @@ byte levelSelect = 0;
 int mem_character_x, mem_character_y;
 // Function on start-up
 void setup() {
-
-// adds intiial menus
-   listMenu.addMenu(newBox);
-   listMenu.addMenu(menu);
-
   //images ini
   menu = loadImage("AdvancedCars2.jpg");
   level = loadImage("WorldSelect.jpg");
@@ -198,8 +186,6 @@ void setup() {
       character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false, move_max);
     }
   }
-  
-
 }
 
 
@@ -263,6 +249,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     for (int i = border; i < columns - border; i++) {
       for (int j = border; j < rows - border; j++) {
         fill(225);
+
         if (selection && j <= mem_character_x + current_selection.moves &&
           i <= mem_character_y + current_selection.moves &&
           j >= mem_character_x - current_selection.moves &&
@@ -274,8 +261,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
         rect(j * box_size, i * box_size, box_size, box_size);
       }
-      // draw all menus listed on listMenu ArrayList
-        listMenu.drawMenus();
     }
 
     // Drawing the cursor
@@ -353,7 +338,6 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
     image(settingsMenu, 0, 0, 1000, 1000);
   }
-
 }
 
 
@@ -424,12 +408,6 @@ int attack(Character character_1, Character character_2) {
 // Function that calls when a key is pressed
 void keyPressed() {
   boolean character_moved = true;
-  
-    // Removes first menu in arry (temporary fix)
-  if (key == ' '){
-    listMenu.removeMenu(0);
-  }
-
 
   //=====================================================THIS IS THE MENU LINE RIHT HERE SO IM WRITING TH IS SO THIS LINE OF TEXT WONT MAKE ME GO SEARCHIGN FO RHTIS CODE GAIAnfthdfhjtgjh
   if (key == 'l' && gameState < 2) {
