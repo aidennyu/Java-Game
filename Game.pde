@@ -51,7 +51,7 @@ boolean our_turn = true;
 
 // Creates array for menu menu objects
  MenuList listMenu = new MenuList();
- TextMenu menu = new TextMenu("bruh","message",100,100,200,500,225);
+ TextMenu textMenu = new TextMenu("bruh","message",100,100,200,500,225);
  //TextMenu menu = MenuObjects.createMenu("textmenu", "Hello World");
  Box newBox = new Box(0,0,100,100,225);
 
@@ -75,7 +75,7 @@ void setup() {
 
 // adds intiial menus
    listMenu.addMenu(newBox);
-   listMenu.addMenu(menu);
+   listMenu.addMenu(textMenu);
 
   //images ini
   menu = loadImage("AdvancedCars2.jpg");
@@ -274,8 +274,7 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
         rect(j * box_size, i * box_size, box_size, box_size);
       }
-      // draw all menus listed on listMenu ArrayList
-        listMenu.drawMenus();
+
     }
 
     // Drawing the cursor
@@ -347,7 +346,9 @@ void draw() { //DRAW FUNCTION HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
       timer -= 5;
     }
 
-
+      // draw all menus listed on listMenu ArrayList
+        listMenu.drawMenus();
+        
     text("Our Turn: " + our_turn, 50, 100);
   } else if (gameState == 3) {
 
@@ -425,8 +426,8 @@ int attack(Character character_1, Character character_2) {
 void keyPressed() {
   boolean character_moved = true;
   
-    // Removes first menu in arry (temporary fix)
-  if (key == ' '){
+    // Removes first menu in array (temporary fix)
+  if (key == ' ' && listMenu.getSize() > 0){
     listMenu.removeMenu(0);
   }
 

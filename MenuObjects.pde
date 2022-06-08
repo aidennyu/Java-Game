@@ -7,6 +7,11 @@
     totalMenus.add(menu);
   }
   
+  // return size of ArrayList
+  public int getSize(){
+    return totalMenus.size();
+  }
+  
   //remove menu from array
   public void removeMenu( int index){
     totalMenus.remove(index);
