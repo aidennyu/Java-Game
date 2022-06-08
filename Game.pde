@@ -41,11 +41,20 @@ Character current_selection;
 
 // Our turn first!
 boolean our_turn = true;
+  
+ MenuList yes = new MenuList();
+ TextMenu menu = new TextMenu("bruh","message",100,100,200,500,225);
+ //TextMenu menu = MenuObjects.createMenu("textmenu", "Hello World");
+ Box newBox = new Box(0,0,100,100,225);
 
-
+ 
+  
 // Function on start-up
 void setup() {
   
+   yes.addMenu(newBox);
+   yes.addMenu(menu);
+
   // Initialize the size of the game window
   size(1000, 1000);
   
@@ -64,7 +73,7 @@ void setup() {
   boolean same_coordinates;
   
   // Randomized initialization for team
-  for (int i = 0; i < character_count; i++) { //<>//
+  for (int i = 0; i < character_count; i++) {
     
     same_coordinates = false;
     
@@ -109,6 +118,8 @@ void setup() {
       character_array[k] = new Character(100, border + character_x, border + character_y, 100, 100, false); 
     }
   }
+  
+
 }
 
 
@@ -178,6 +189,9 @@ void draw() {
   }
   
   text("Our Turn: " + our_turn, 50, 100);
+
+  yes.drawMenus();
+  
 }
 
 
@@ -222,6 +236,10 @@ void keyPressed() {
   boolean character_moved = true;
   
   // Keys to move the character if selected
+  if (key == ' '){
+    yes.removeMenu(0);
+  }
+  
   if (selection && key == CODED) {
     if (keyCode == UP && current_selection.y_position > border) {
       
